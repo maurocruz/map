@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Marker } from "react-map-gl";
-import { FeatureInterface } from "../../interfaces/geoJson/GeoJsonInterface";
+import { FeatureInterface } from "src/interfaces";
 
 const Points = (props: any) => {
 
