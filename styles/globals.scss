@@ -27,4 +27,38 @@ figure, img {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
+}
+
+.iconLoading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5em;
+  color: blue;
+  text-align: center;
+  min-height: 100vh;
+}
+
+form {
+  fieldset {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    margin: 5px 0;
+
+    legend {
+      background-color: #ccc;
+      width: 100%;
+    }
+
+    input {
+      min-height: 30px;
+    }
+  }
+
+  button {
+    width: 100%;
+    cursor: pointer;
+  }
 }

@@ -8,9 +8,9 @@ module.exports = {
         ...config.resolve.alias,
         '@components': path.resolve(__dirname, './src/components'),
         '@interfaces': path.resolve(__dirname, './src/interfaces'),
+        '@contexts': path.resolve(__dirname, './src/contexts'),
     }
 
-
-        return config
+    return config
     },
   }

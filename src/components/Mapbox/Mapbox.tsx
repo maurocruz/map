@@ -1,5 +1,5 @@
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import ReactMapGL, { MapEvent, GeolocateControl, NavigationControl, ScaleControl, Source, Layer } from 'react-map-gl';
 import Geocoder from 'react-map-gl-geocoder'
 
@@ -9,6 +9,7 @@ import { ChangeTileset } from "./Controls";
 import WebMercatorViewport from "viewport-mercator-project";
 
 import * as styles from './Mapbox.module.scss'
+import { MapContext } from "src/contexts";
 
 /**  
  * COMPONENT MAP EM MAPBOX
@@ -16,8 +17,9 @@ import * as styles from './Mapbox.module.scss'
  * @param param0 
  * @returns 
  */
-const Mapbox = ({ data }) => 
+const Mapbox = () => 
 {    
+    const { dataLocation: data } = useContext(MapContext)
     const style = styles as any;
 
     // VALUES QUE DEVEM SER DIMÂMICOS NO FUTURO

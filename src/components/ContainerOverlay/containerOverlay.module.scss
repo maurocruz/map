@@ -1,0 +1,55 @@
+.container {
+    display: none;
+    position: absolute;
+    align-self: center;
+    justify-self: center;
+    width: fit-content;
+    height: fit-content;
+    box-sizing: border-box;
+    padding: 0;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    box-shadow: 2px 2px 6px #777;
+    background-color: white;
+    z-index: 10;
+
+    .draggableClose {
+        display: flex;
+        background-color: rgb(84, 84, 128);
+        padding: 2px;
+
+        .draggable {
+            flex-basis: 100%;
+            line-height: 0;
+            cursor: move;
+
+            svg {
+                font-size: 1.3em;
+                color: white;
+            }
+        }
+
+        .close {
+            flex-basis: 20px;
+            line-height: 0;
+
+            svg {
+                font-size: 1.4em;
+                color: white;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .content {
+        padding: 5px;
+
+        .login {
+            h1 {
+                margin: 0;
+                font-size: 1.2em;
+                text-align: center;
+            }
+        }
+    }
+}

@@ -21,13 +21,14 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["src/components/*"]
-    }
+    },
+    "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "pages/login.js"  ],
   "exclude": [
     "node_modules"
   ]
