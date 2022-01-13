@@ -1,39 +1,25 @@
-import { createContext, useEffect, useState } from "react";
+import { Modal } from "@components/Modal";
+import Header from "@components/Header/Header";
+import { createContext } from "react";
+import useModal from "src/hooks/useModal/useModal";
 
-type ContainerOverlayContextType = {
-    overlay: any,
-    setOverlay: Function,
-    isVisible: boolean, 
-    setIsVisible: Function
+type ContainerContextType = {
+    showModal: boolean,
+    toogleModal: Function,
+    modalName: string,
+    setModalName: Function
 }
 
-const ContainerContext = createContext({} as ContainerOverlayContextType)
+const ContainerContext = createContext({} as ContainerContextType)
 
-const ContainerProvider = ({ children }) => {
+const ContainerProvider = () => {
 
-    const [ overlay, setOverlay ] = useState(null)
-
-    const [ newChildren, setNewChildren ] = useState(children)
-
-    const [ isVisible, setIsVisible ] = useState(false)
-
-    useEffect(()=>{
-        if (overlay) {
-            setIsVisible(true);
-            setNewChildren([ children[0], overlay ])
-        }
-    },[overlay])
-
-    useEffect(() => {
-        if(isVisible == false) {
-            setNewChildren([ children[0] ])
-        }
-    }, [isVisible])
-    
+    const { showModal, toogleModal, modalName, setModalName } = useModal()
 
     return (
-        <ContainerContext.Provider value={{ overlay, setOverlay, isVisible, setIsVisible }}>
-            {newChildren ?? children}
+        <ContainerContext.Provider value={{ showModal, toogleModal, modalName, setModalName }}>
+            <Header/>
+            <Modal showModal={showModal} modalName={modalName} />             
         </ContainerContext.Provider>
     )
 }

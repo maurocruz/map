@@ -1,29 +1,19 @@
-import { useContext, useRef } from "react";
+import { useRef } from "react";
 import Draggable from 'react-draggable'
-import { ContainerContext } from "src/contexts";
 import DraggableBar from "./DraggableBar";
 
-import styles from './containerOverlay.module.scss'
+import { Login } from "@components/Forms";
 
-const ContainerOverlay = ({ children }) => {
+import styles from './modal.module.scss'
 
-    const { setIsVisible } = useContext(ContainerContext)
+const Modal = ({ showModal, modalName }) => {
 
     const ref = useRef(null)
 
-    const css = children ? { display: 'block' } : {}
+    const css = showModal ? { display: 'block' } : {}
 
     function _onClick(e) {
         e.stopPropagation()
-    }
-
-    function _onMouseDown(e: MouseEvent) {
-    }
-
-    if(ref.current) {
-        window.addEventListener('click', function(e: MouseEvent) {
-            setIsVisible(false)
-        })
     }
 
     return (
@@ -31,16 +21,15 @@ const ContainerOverlay = ({ children }) => {
             nodeRef={ref}
             handle="#draggableBar"
             bounds="body"
-            onMouseDown={_onMouseDown}
         >
             <div id="container-overlay" className={styles.container} ref={ref} style={css} onClick={(e) => _onClick(e)}>
                 <DraggableBar />
                 <div id="containerOverlayContent" className={styles.content}>
-                    {children}
+                    {modalName == 'login' ? <Login /> : null}                    
                 </div>
             </div>
         </Draggable>
     )    
 }
 
-export default ContainerOverlay;
+export default Modal;

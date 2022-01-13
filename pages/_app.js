@@ -4,7 +4,6 @@ import { SWRConfig } from 'swr'
 import dynamic from 'next/dynamic';
 import { Icon } from '@iconify/react';
 
-import Header from '@components/Header'
 import { AppProvider, MapProvider, ContainerProvider } from '../src/contexts/'
 
 import '../styles/globals.scss'
@@ -33,7 +32,6 @@ function App({ Component, pageProps }) {
         <div id="wrapper" className='wrapper'>
 
           <ContainerProvider>
-            <Header/>  
             <Component/>
           </ContainerProvider>
 

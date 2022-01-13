@@ -1,8 +1,7 @@
-import { ContainerOverlay } from '../src/components/ContainerOverlay'
 
-export default function Overlay() {
+export default function Home() {
 
   return (
-    <ContainerOverlay/>
+    <></>
   )
 }

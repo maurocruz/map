@@ -41,6 +41,18 @@ figure, img {
 }
 
 form {
+  h1 {
+    margin: 0;
+    font-size: 1.2em;
+    text-align: center;
+  }
+
+  p {
+    margin: 5px 0;
+    font-size: 0.85em;
+    color: #333;
+  }
+
   fieldset {
     padding: 0;
     margin: 0;
@@ -54,6 +66,7 @@ form {
 
     input {
       min-height: 30px;
+      width: 100%;
     }
   }
 

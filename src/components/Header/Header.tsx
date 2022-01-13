@@ -1,20 +1,19 @@
 import React, { useContext } from 'react'
 import { Icon } from '@iconify/react';
 
-import { Login } from '../ContainerOverlay'
-
 import * as styles from './Header.module.scss'
-import { ContainerContext } from 'src/contexts'
+import { ContainerContext } from '@contexts/ContainerContext';
 
 const Header = () => {
 
-  const { setOverlay } = useContext(ContainerContext)
+  const { toogleModal, setModalName } = useContext(ContainerContext)
 
   const style  = styles as any;
 
   function _onClickAccount(e) {
-    e.stopPropagation()  
-    setOverlay(Login)
+    toogleModal()
+    setModalName('login')
+    e.stopPropagation()
   }
 
   return (

@@ -2,14 +2,14 @@ import { Icon } from '@iconify/react';
 import { useContext } from 'react';
 import { ContainerContext } from 'src/contexts';
 
-import styles from './containerOverlay.module.scss'
+import styles from './modal.module.scss'
 
 export default function DraggableBar() {
 
-    const { setIsVisible } = useContext(ContainerContext)
+    const { toogleModal } = useContext(ContainerContext)
 
     function _close() {
-        setIsVisible(false)
+        toogleModal(false)
     }
 
     return(

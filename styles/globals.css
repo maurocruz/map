@@ -1,0 +1,71 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+figure, img {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.iconLoading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5em;
+  color: blue;
+  text-align: center;
+  min-height: 100vh;
+}
+
+form h1 {
+  margin: 0;
+  font-size: 1.2em;
+  text-align: center;
+}
+form p {
+  margin: 5px 0;
+  font-size: 0.85em;
+  color: #333;
+}
+form fieldset {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  margin: 5px 0;
+}
+form fieldset legend {
+  background-color: #ccc;
+  width: 100%;
+}
+form fieldset input {
+  min-height: 30px;
+  width: 100%;
+}
+form button {
+  width: 100%;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=globals.css.map */
