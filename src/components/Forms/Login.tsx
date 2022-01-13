@@ -1,8 +1,16 @@
-import { useEffect, useState } from 'react'
-import useApi from 'src/hooks/useApi/useApi'
+import { useContext, useEffect, useState } from 'react'
+import { setCookie } from 'nookies'
+
 import styles from './forms.module.scss'
+import { AppContext } from '@contexts/AppContext'
+import { useApi } from '@hooks/useApi'
+import { ContainerContext } from '@contexts/ContainerContext'
 
 const Login = () => {   
+
+    const { setUser } = useContext(AppContext)
+
+    const { toogleModal } = useContext(ContainerContext)
 
     const { setRequest, response } = useApi()
 
@@ -17,12 +25,19 @@ const Login = () => {
 
             if (response.status == "success") {
                 setMessage('')
+                setCookie(undefined, 'plinctmap.token', response.token, {
+                    maxAge: 60 * 60 * 1
+                })
+                setUser({
+                    name: response.data[0].name
+                })
+                toogleModal(false)
             }
         }
     },[response])
 
     
-    function submitForm(e: any) {
+    async function submitForm(e: any) {
         setRequest({
             method: 'post',
             type: 'login',

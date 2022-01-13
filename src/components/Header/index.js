@@ -1,3 +1,4 @@
 import Header from './Header'
+import UserPanel from './UserPanel'
 
-export default Header
+export { Header, UserPanel } 

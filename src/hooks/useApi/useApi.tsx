@@ -10,7 +10,13 @@ type Request = {
 type Response = {
     status: string,
     message: string,
-    data: {}
+    token: string,
+    data: [
+       { 
+           name: string 
+        }
+    ],
+    payload: {}
 }
 
 export default function useApi() {
