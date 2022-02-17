@@ -1,16 +1,14 @@
 import { CSSProperties, useRef } from "react";
-import { MapEvent } from "react-map-gl";
-
 
 const TooltipRightButton = (props: any) => {  
-    const mapEvent = props.mapEvent as MapEvent;
+    const mapEvent = props.mapEvent;
     const setRightButton = props.setRightButton;
     const setEventInfo = props.setEventInfo;
 
-    const lng = mapEvent.lngLat[0]
-    const lat = mapEvent.lngLat[1]
-    const top = mapEvent.point[1]
-    const left = mapEvent.point[0]
+    const lng = mapEvent.lngLat.lng
+    const lat = mapEvent.lngLat.lat
+    const top = mapEvent.point.y
+    const left = mapEvent.point.x
 
     const divRef = useRef<HTMLDivElement>(null);
 
@@ -21,7 +19,8 @@ const TooltipRightButton = (props: any) => {
         backgroundColor: 'white',
         padding: '20px',
         fontSize: '12px',
-        cursor: 'auto'
+        cursor: 'auto',
+        zIndex: 10
     }
 
     const styleButton: CSSProperties = {
@@ -32,7 +31,7 @@ const TooltipRightButton = (props: any) => {
 
     // copy lngLat to clipboard
     function handleOnClick() {
-        const clipText = mapEvent.lngLat[1] + ", " + mapEvent.lngLat[0];
+        const clipText = lat + ", " + lng;
         navigator.clipboard.writeText(clipText).then(() => {
             setEventInfo(<p>Copied coordinates to clipboard!</p>)
             setTimeout(() => {

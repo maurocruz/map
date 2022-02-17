@@ -1,0 +1,30 @@
+.userPanel {
+  display: block;
+  position: relative;
+}
+.userPanel .avatar {
+  font-size: 40px;
+  cursor: pointer;
+}
+.userPanel .panel {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: white;
+  z-index: 10;
+  width: 150px;
+  padding: 5px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+.userPanel .panel p {
+  font-size: 0.85em;
+}
+.userPanel .panel button {
+  display: block;
+  margin: 3px 0;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=UserPanel.module.css.map */

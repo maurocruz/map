@@ -23,7 +23,7 @@ export default function useApi() {
 
     const [ request, setRequest ] = useState<Request>()
 
-    const [ response, setResponse ] = useState<Response>()
+    const [ response, setResponse ] = useState<any>(null)
     
     useEffect(() => {
         if (request) {
@@ -36,7 +36,8 @@ export default function useApi() {
             axios({
                 url: url,
                 method: method,
-                data: values
+                data: values,
+                params: request.values
 
             }).then((response) => {
                 setResponse(response.data)
@@ -45,7 +46,6 @@ export default function useApi() {
                 console.log(error)
 
             })
-
         }
     }, [request])
 

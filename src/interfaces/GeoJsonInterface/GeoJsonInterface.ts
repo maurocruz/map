@@ -17,7 +17,8 @@ interface FeatureInterface {
 }
 
 interface GeoJsonInterface {
-    type: 'FeatureCollection'
+    type: 'FeatureCollection',
+    bbox: [],
     features: FeatureInterface[]
 }
 

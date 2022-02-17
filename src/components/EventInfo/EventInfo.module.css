@@ -13,6 +13,7 @@
     color: floralwhite;
     animation-name: slideup;
     animation-duration: 3s;
+    z-index: 10;
 }
 .component p {
     margin: 0;

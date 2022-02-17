@@ -2,15 +2,12 @@ import { useContext, useEffect, useState } from 'react'
 import { setCookie } from 'nookies'
 
 import styles from './forms.module.scss'
-import { AppContext } from '@contexts/AppContext'
 import { useApi } from '@hooks/useApi'
 import { ContainerContext } from '@contexts/ContainerContext'
 
 const Login = () => {   
 
-    const { setUser } = useContext(AppContext)
-
-    const { toogleModal } = useContext(ContainerContext)
+    const { toogleModal, setModalName } = useContext(ContainerContext)
 
     const { setRequest, response } = useApi()
 
@@ -28,9 +25,9 @@ const Login = () => {
                 setCookie(undefined, 'plinctmap.token', response.token, {
                     maxAge: 60 * 60 * 1
                 })
-                setUser({
-                    name: response.data[0].name
-                })
+
+                // TODO precisa mudar o status no painel do usuario sem ter que dar refresh
+
                 toogleModal(false)
             }
         }
@@ -40,7 +37,7 @@ const Login = () => {
     async function submitForm(e: any) {
         setRequest({
             method: 'post',
-            type: 'login',
+            type: 'auth/login',
             values: {
                 email: e.target.elements.email.value,
                 password: e.target.elements.password.value
@@ -50,16 +47,16 @@ const Login = () => {
     }
 
     function handleForgotPassword() {
-        
+        setModalName('forgotPassword')        
     }
 
     function handleCreateAnAccount() {
-        console.log('create account')        
+        setModalName('register');
     }
 
     return (
             <div className={styles.login}>
-                <form onSubmit={submitForm} method='post'>
+                <form onSubmit={submitForm} method='post' className={styles.loginForm}>
                     <h1>Sign in</h1>
                     <fieldset>
                         <legend>Name</legend>

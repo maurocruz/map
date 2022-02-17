@@ -4,5 +4,5 @@ import ViewportInterface from "./ViewportInterface";
 export default interface DataInterface {
     type: String,    
     viewport: ViewportInterface,
-    geojson: GeoJsonInterface
+    geojson: GeoJSON.Feature<GeoJSON.Geometry> | GeoJSON.FeatureCollection<GeoJSON.Geometry> | string
 }

@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import { useApi } from "@hooks/useApi";
+import { createContext, useEffect, useState } from "react";
 import DataInterface from "src/interfaces/DataInterface";
 
 import Data from '../lib/Data'
@@ -13,7 +14,9 @@ export const MapContext = createContext({} as MapContextType)
 export function MapProvider({ children }) {
 
   const dataStart = new Data();
-  dataStart.setViewPort().latitude(-15.791592864042546).longitude(-47.889556334719465).zoom(5)
+  // posição inicial : PIRENÓPOLIS 
+  // TODO dado que deve ser consfigurado e armazenado pelo usuário
+  dataStart.setViewPort().latitude(-15.853947877733347).longitude(-48.95984155940647).zoom(12)
 
   const [ dataLocation , setDataLocation ] = useState(dataStart.ready())
 

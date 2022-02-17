@@ -2,7 +2,7 @@ import { useRef } from "react";
 import Draggable from 'react-draggable'
 import DraggableBar from "./DraggableBar";
 
-import { Login } from "@components/Forms";
+import { ForgotPassword, Login, Register } from "@components/Forms";
 
 import styles from './modal.module.scss'
 
@@ -25,7 +25,9 @@ const Modal = ({ showModal, modalName }) => {
             <div id="container-overlay" className={styles.container} ref={ref} style={css} onClick={(e) => _onClick(e)}>
                 <DraggableBar />
                 <div id="containerOverlayContent" className={styles.content}>
-                    {modalName == 'login' ? <Login /> : null}                    
+                    {modalName == 'login' ? <Login /> : null}
+                    {modalName == 'register' ? <Register /> : null}
+                    {modalName == 'forgotPassword' ? <ForgotPassword /> : null}
                 </div>
             </div>
         </Draggable>

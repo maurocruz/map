@@ -12,8 +12,8 @@ const ChangeTileset = ({mapStyle, setMapStyle, mapStreet, mapSattelite}) =>
     const imageSattelite = "/media/satellite-style-icon.f45844d1.png";
     const textSattelite = "Sattelite";
 
-    const [ imgBackground, setImgBackground ] = useState(imageSattelite)
-    const [ textSpan, setTextSpan ] = useState(textSattelite)
+    const [ imgBackground, setImgBackground ] = useState(mapStyle == mapStreet ? imageSattelite : imageStreet)
+    const [ textSpan, setTextSpan ] = useState(mapStyle == mapStreet ? textSattelite : textStreet)
 
     const buttonStyle: CSSProperties = {
         position: 'absolute',
@@ -31,7 +31,8 @@ const ChangeTileset = ({mapStyle, setMapStyle, mapStreet, mapSattelite}) =>
         borderRadius: '8px',
         border: '2px solid #fff',
         backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 28.47%), url(${imgBackground})`,
-        cursor: 'pointer'
+        cursor: 'pointer',
+        zIndex: 10
     }
 
     const spanStyle: CSSProperties = {

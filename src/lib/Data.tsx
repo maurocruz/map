@@ -24,7 +24,7 @@ class Data {
     ready() {
         this.data.viewport = this.Viewport.ready()
         this.data.geojson = this.GeoJson.ready()
-        return this.data as DataInterface
+        return this.data as unknown as DataInterface
     }
 }
 

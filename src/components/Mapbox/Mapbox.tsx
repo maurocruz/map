@@ -10,6 +10,8 @@ import WebMercatorViewport from "viewport-mercator-project";
 
 import * as styles from './Mapbox.module.scss'
 import { MapContext } from "src/contexts";
+import { usePlace } from "@hooks/usePlinct";
+import { Icon } from "@iconify/react";
 
 /**  
  * COMPONENT MAP EM MAPBOX
@@ -63,10 +65,21 @@ const Mapbox = () =>
         []
     );
 
-    /*{DATA.geojson.features.map((feature: FeatureInterface) => { 
-        return <Points key={feature.properties.id} feature={feature} /> 
-    })}*/
 
+    function layerAdditiobalType(additionalType: string, color: string) {
+        return <Source id={additionalType} type="geojson" data={`https://plinct.local/api/place?additionalType=${additionalType}&format=geojson`} >
+            <Layer 
+                id={`${additionalType}-layer`}
+                type="circle"
+                source={additionalType}
+                paint={{
+                    "circle-color": color,
+                    "circle-radius": 8,
+                    "circle-stroke-color": "#ffffff",
+                    "circle-stroke-width": 2,
+                }}/>
+        </Source>
+    }
 
     return (
         <ReactMapGL
@@ -78,12 +91,17 @@ const Mapbox = () =>
             height="100%"
             onViewportChange={handleViewportChange}
             onClick={_onClick}
+            pitch={60}
+            zoom={13}
         >
             
-            <Source id="fromPlinctApi" type="geojson" data={data.geojson}>
-                <Layer id='point' type='circle' paint={{'circle-radius': 10,  'circle-color': '#007cbf'}}/>
-            </Source>
             
+            {layerAdditiobalType("FoodEstablishment", "#ff0000")}
+
+            {layerAdditiobalType("TouristAttraction", "#00ff00")}
+
+            {layerAdditiobalType("LodgingBusiness", "#0000ff")}
+           
 
             <Geocoder
                 mapRef={mapRef}
@@ -97,7 +115,6 @@ const Mapbox = () =>
 
             <GeolocateControl style={{top: 5, left: 5}}
                 showAccuracyCircle={false}
-                auto
              />
 
             <NavigationControl style={{ top: 40, left: 5 }}
@@ -113,9 +130,7 @@ const Mapbox = () =>
                     setRightButton={setRightButton} 
                     setEventInfo={setEventInfo}
                 />
-            }
-
-            {eventInfo && <EventInfo>{eventInfo}</EventInfo>}
+            }            
 
             <ChangeTileset mapStyle={mapStyle} setMapStyle={setMapStyle} mapStreet={mapStreet} mapSattelite={mapSattelite} />
 
