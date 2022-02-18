@@ -6,15 +6,9 @@ import { ForgotPassword, Login, Register } from "@components/Forms";
 
 import styles from './modal.module.scss'
 
-const Modal = ({ showModal, modalName }) => {
+const Modal = ({ modalName }) => {
 
     const ref = useRef(null)
-
-    const css = showModal ? { display: 'block' } : {}
-
-    function _onClick(e) {
-        e.stopPropagation()
-    }
 
     return (
         <Draggable
@@ -22,7 +16,7 @@ const Modal = ({ showModal, modalName }) => {
             handle="#draggableBar"
             bounds="body"
         >
-            <div id="container-overlay" className={styles.container} ref={ref} style={css} onClick={(e) => _onClick(e)}>
+            <div id="container-overlay" className={styles.container} ref={ref}>
                 <DraggableBar />
                 <div id="containerOverlayContent" className={styles.content}>
                     {modalName == 'login' ? <Login /> : null}

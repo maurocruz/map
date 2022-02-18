@@ -4,17 +4,17 @@ import useUser, { UserType } from "@hooks/useUser/useUser";
 type AppContextType = {
     isAuthenticated: boolean,
     user: UserType,
-    setUser: (user: UserType) => void
+    setToken: any,
 }
 
 export const  AppContext = createContext({} as AppContextType);
 
 export function AppProvider({ children }) {
 
-   const { isAuthenticated, user, setUser } = useUser();
+   const { isAuthenticated, user, setToken } = useUser();
 
     return (
-        <AppContext.Provider value={{ isAuthenticated, user, setUser }}>
+        <AppContext.Provider value={{ isAuthenticated, user, setToken }}>
             { children }
         </AppContext.Provider>
     )

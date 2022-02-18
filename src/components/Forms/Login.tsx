@@ -4,8 +4,11 @@ import { setCookie } from 'nookies'
 import styles from './forms.module.scss'
 import { useApi } from '@hooks/useApi'
 import { ContainerContext } from '@contexts/ContainerContext'
+import { AppContext } from '@contexts/AppContext'
 
 const Login = () => {   
+
+    const { setToken } = useContext(AppContext)
 
     const { toogleModal, setModalName } = useContext(ContainerContext)
 
@@ -25,8 +28,7 @@ const Login = () => {
                 setCookie(undefined, 'plinctmap.token', response.token, {
                     maxAge: 60 * 60 * 1
                 })
-
-                // TODO precisa mudar o status no painel do usuario sem ter que dar refresh
+                setToken(response);
 
                 toogleModal(false)
             }

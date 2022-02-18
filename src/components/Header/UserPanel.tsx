@@ -12,7 +12,7 @@ const UserPanel = () => {
 
     const { toogleModal, setModalName } = useContext(ContainerContext)
 
-    const { user, isAuthenticated, setUser } = useContext(AppContext)
+    const { user, isAuthenticated, setToken } = useContext(AppContext)
 
     const [ showPanel, setShowPanel ] = useState(false)
 
@@ -27,14 +27,14 @@ const UserPanel = () => {
         }
         
       } else {
-        toogleModal()
+        toogleModal(false)
         setModalName('login')
         e.stopPropagation()
       }
     }
 
     function handleLogout() {
-        setUser(null);
+        setToken();
         destroyCookie(undefined, 'plinctmap.token');        
         setShowPanel(false)    
     }

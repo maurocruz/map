@@ -19,7 +19,7 @@ const ContainerProvider = () => {
     return (
         <ContainerContext.Provider value={{ showModal, toogleModal, modalName, setModalName }}>
             <Header/>
-            <Modal showModal={showModal} modalName={modalName} />             
+            {showModal && <Modal modalName={modalName} />}
         </ContainerContext.Provider>
     )
 }

@@ -1,4 +1,4 @@
-import mapboxgl, { SymbolLayout } from "mapbox-gl"
+import mapboxgl from "mapbox-gl"
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
 import { ChangeTileset } from "./Controls";
 import { useEffect, useRef, useState } from "react"
@@ -25,25 +25,15 @@ const MapGl = () => {
 
     const [ mapStyle, setMapStyle ] = useState(mapStreet)
     const [ center, setCenter ] = useState({ lng: -48.95984155940647, lat: -15.853947877733347 });
-    const [ zoom, setZoom ] = useState(13)
-    const [ pitch, setPitch ] = useState(50)
-    const [ bearing, setBearing ] = useState(0)
+    const [ zoom, setZoom ] = useState(13) // 13
+    const [ pitch, setPitch ] = useState(50) // 50
+    const [ bearing, setBearing ] = useState(0) // 0
 
     const [ rightButton, setRightButton ] = useState(null)
     const [ eventInfo, setEventInfo ] = useState(null);
 
     // VALUES QUE DEVEM SER DIMÂMICOS NO FUTURO
     const country = 'br' // país ou local cuja a busca do map deve ser restrito
-
-    function getLayout(iconImage: string): SymbolLayout {
-        return {
-            "icon-image": iconImage,
-            "text-field": ["get","name"],
-            "text-size": 10,
-            "text-offset": [0,1.2],
-            'text-anchor': 'top'        
-        }
-    }
   
     useEffect(() => {
         // create the map 
@@ -78,57 +68,42 @@ const MapGl = () => {
         // MAP ONLOAD
         map.on("load", () => {
 
-            // FoodEstablishment
-            map.addSource("FoodEstablishment", {
+            // Places
+            map.addSource("places", {
                 type: "geojson",
-                data: "https://plinct.local/api/place?additionalType=FoodEstablishment&format=geojson"
-            })
-            // TouristAttraction
-            map.addSource("TouristAttraction", {
-                type: "geojson",
-                data: "https://plinct.local/api/place?additionalType=TouristAttraction&format=geojson"
-            })
-            // LodgingBusiness
-            map.addSource("LodgingBusiness", {
-                type: "geojson",
-                data: "https://plinct.local/api/place?additionalType=LodgingBusiness&format=geojson"
+                data: "https://plinct.local/api/place?format=geojson&limit=none"
             })
 
             map.addLayer({
-                id: "food-establishment",
+                id: "cluster-places",
                 type: "symbol",
-                source: "FoodEstablishment",
-                layout: getLayout("restaurant-15")
-            });
-
-            map.addLayer({
-                id: "tourist-attraction",
-                type: "symbol",
-                source: "TouristAttraction",
-                layout: getLayout("park-15")
-            });
-
-            map.addLayer({
-                id: "lodging-business",
-                type: "symbol",
-                source: "LodgingBusiness",
-                layout: getLayout("lodging-15")
+                source: "places",
+                layout: {
+                    "icon-image": ['get','icon-image'],
+                    "text-field": ["get","name"],
+                    "text-size": 10,
+                    "text-offset": [0,0.8],
+                    'text-anchor': 'top'                          
+                },
+                paint: {
+                    "text-color": "#dd2200"
+                }
             });
 
             // Center the map on the coordinates of any clicked circle from the 'circle' layer.
-            map.on('click', 'tourist-attraction', (e: any) => {
+            map.on('click', 'cluster-places', (e: any) => {
                 map.flyTo({ 
                     center: e.features[0].geometry.coordinates, 
-                    zoom: 16
+                    zoom: 18
                 })
             });
             // Change the cursor to a pointer when the it enters a feature in the 'circle' layer.
-            map.on('mouseenter', 'tourist-attraction', () => {
+            map.on('mouseenter', 'cluster-places', () => {
                 map.getCanvas().style.cursor = 'pointer';
             });
              
             // Change it back to a pointer when it leaves.
-            map.on('mouseleave', 'tourist-attraction', () => {
+            map.on('mouseleave', 'cluster-places', () => {
                 map.getCanvas().style.cursor = '';
             });
 
