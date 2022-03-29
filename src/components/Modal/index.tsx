@@ -1,4 +1,5 @@
 import Modal from "./Modal";
 import DraggableAndClose from "./DraggableBar";
+import FeatureModal from './FeatureModal';
 
-export { Modal, DraggableAndClose }
+export { Modal, DraggableAndClose, FeatureModal }

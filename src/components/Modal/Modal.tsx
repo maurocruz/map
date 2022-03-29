@@ -6,7 +6,7 @@ import { ForgotPassword, Login, Register } from "@components/Forms";
 
 import styles from './modal.module.scss'
 
-const Modal = ({ modalName }) => {
+const Modal = ({ modalName, modalComponent }) => {
 
     const ref = useRef(null)
 
@@ -22,6 +22,7 @@ const Modal = ({ modalName }) => {
                     {modalName == 'login' ? <Login /> : null}
                     {modalName == 'register' ? <Register /> : null}
                     {modalName == 'forgotPassword' ? <ForgotPassword /> : null}
+                    {modalComponent}
                 </div>
             </div>
         </Draggable>

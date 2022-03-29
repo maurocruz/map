@@ -6,6 +6,8 @@ interface ViewportInterface {
     latitude: number,
     longitude: number,
     zoom: number,
+    pitch: number,
+    bearing: number,
     bbox: [[number,number],[number,number]],
 }
 

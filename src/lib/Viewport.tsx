@@ -10,23 +10,35 @@ class Viewport
         latitude: 0,
         longitude: 0,
         zoom: 0,
+        pitch: 0,
+        bearing: 0,
         bbox: []
 
     }
 
     zoom(zoom: number) {
-        this.viewport.zoom = zoom
-        return this
+        this.viewport.zoom = zoom;
+        return this;
     }
 
     latitude(latitude: number) {
-        this.viewport.latitude = latitude
-        return this
+        this.viewport.latitude = latitude;
+        return this;
     }
 
     longitude(longitude: number) {
-        this.viewport.longitude = longitude
-        return this
+        this.viewport.longitude = longitude;
+        return this;
+    }
+
+    pitch(pitch: number) {
+        this.viewport.pitch = pitch;
+        return this;
+    }
+
+    bearing(bearing: number) {
+        this.viewport.bearing = bearing;
+        return this;
     }
 
     bbox(lngMax: number, latMax: number, lngMin: number, latMin: number) {        
@@ -34,8 +46,8 @@ class Viewport
     }
 
     ready() {
-        return this.viewport
+        return this.viewport;
     }
 }
 
-export default Viewport
+export default Viewport;

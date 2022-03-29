@@ -17,8 +17,10 @@ class MyDocument extends Document {
           <link href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.3/mapbox-gl-geocoder.css' rel='stylesheet' />
         </Head>
         <body>
+          <div>
           <Main />
           <NextScript />
+          </div>
         </body>
       </Html>
     )

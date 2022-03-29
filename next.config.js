@@ -9,6 +9,7 @@ module.exports = {
         '@components': path.resolve(__dirname, './src/components'),
         '@interfaces': path.resolve(__dirname, './src/interfaces'),
         '@contexts': path.resolve(__dirname, './src/contexts'),
+        '@hooks': path.resolve(__dirname, './src/hooks'),
     }
 
     return config

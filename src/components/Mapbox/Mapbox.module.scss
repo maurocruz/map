@@ -1,3 +1,19 @@
 .geocoder {
     width: 80%;
 }
+.mapboxPopup {
+
+  div:first-child {
+    border-right-color: rgba(255,255,255,0.8);
+  }
+
+  div:last-child { 
+    background-color: rgba(255,255,255,0.8);
+    padding: 0 5px; 
+    box-shadow: 1px 1px 1px #333;
+    border-top-left-radius: 0;       
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 0;
+  }
+}
