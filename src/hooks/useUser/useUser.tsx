@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
-import { parseCookies } from 'nookies';
-import jwtDecode from 'jwt-decode';
+import { useContext, useEffect } from 'react'
+import { destroyCookie, setCookie } from 'nookies';
+import { useApi } from '@hooks/useApi';
+import { AppContext } from '@contexts/AppContext';
 
 export type UserType = {
     name: string
@@ -8,30 +9,56 @@ export type UserType = {
 
 export default function useUser() 
 {
-    const [ user, setUser ] = useState<UserType | null>(null);
+  const { setIsAuthenticated, setUser, setToken } = useContext(AppContext);
 
-    const [ token, setToken ] = useState<String | null>(null);
+  const { responseApi, setRequest } = useApi();  
 
-    const isAuthenticated = !!user;
-
-    useEffect(() => {
-        const { 'plinctmap.token': token } = parseCookies();
-        
-        if (token) {
-            const tokenDecode = jwtDecode<UserType>(token)
-            setUser({
-                name: tokenDecode.name
-            })
-        } else {
-            setUser(null);
-        }
-
-    }, [token])
-
-
-    return {
-        isAuthenticated,
-        user, 
-        setToken
+  useEffect(() => {
+    if (responseApi && responseApi.status == "success" && responseApi.token) {
+      setCookie(undefined, 'plinctmap.token', responseApi.token, {
+        maxAge: 60 * 60 * 1
+      })
+      setToken(responseApi.token);
     }
+
+    return () => {}
+    
+  }, [responseApi])
+
+  function login (email: string, password: string) {
+    setRequest({
+      method: 'post',
+      type: 'auth/login',
+      values: {
+        email: email,
+        password: password
+      }
+    })
+  }
+
+  function register (email: string, name: string, password: string, repeatPassword: string) {
+    setRequest({
+      method: 'post',
+      type: 'auth/register',
+      values: {
+        email: email,
+        name: name,
+        password: password,
+        repeatPassword: repeatPassword
+      }
+    })
+  }
+
+  function logout() {
+    setIsAuthenticated(null);
+    setUser(null);
+    destroyCookie(undefined, 'plinctmap.token');        
+  }
+
+  return {
+    login,
+    logout,
+    register,
+    responseApi
+  }
 }

@@ -1,96 +1,77 @@
 import { useContext, useEffect, useState } from 'react'
-import { setCookie } from 'nookies'
+
+import { ContainerContext } from '@contexts/ContainerContext'
+import useUser from '@hooks/useUser/useUser'
 
 import styles from './forms.module.scss'
-import { useApi } from '@hooks/useApi'
-import { ContainerContext } from '@contexts/ContainerContext'
-import { AppContext } from '@contexts/AppContext'
 
-const Login = () => {   
+const Login = () => {
 
-    const { setToken } = useContext(AppContext)
+  const { toogleModal, setModalName } = useContext(ContainerContext)
 
-    const { toogleModal, setModalName } = useContext(ContainerContext)
+  const { login, responseApi } = useUser();
 
-    const { setRequest, response } = useApi()
+  const [ message, setMessage ] = useState('')
 
-    const [ message, setMessage ] = useState('')
-
-    // IF SEND DATA TO API
-    useEffect(()=>{
-        if (response) {
-            if (response.status == 'fail') {
-                setMessage(response.message)
-            }
-
-            if (response.status == "success") {
-                setMessage('')
-                setCookie(undefined, 'plinctmap.token', response.token, {
-                    maxAge: 60 * 60 * 1
-                })
-                setToken(response);
-
-                toogleModal(false)
-            }
-        }
-    },[response])
-
-    
-    async function submitForm(e: any) {
-        setRequest({
-            method: 'post',
-            type: 'auth/login',
-            values: {
-                email: e.target.elements.email.value,
-                password: e.target.elements.password.value
-            }
-        })
-        e.preventDefault()
+  useEffect(()=>{
+    if (responseApi) {
+      if (responseApi.status == 'fail') {
+        setMessage(responseApi.message)
+      } else if (responseApi.status == "success") {
+        setMessage('')
+        toogleModal(false)
+      }
     }
+  },[responseApi])
 
-    function handleForgotPassword() {
-        setModalName('forgotPassword')        
-    }
+  function submitForm(e: any) {
+    login(e.target.elements.email.value, e.target.elements.password.value)
+    e.preventDefault()
+  }
 
-    function handleCreateAnAccount() {
-        setModalName('register');
-    }
+  function handleForgotPassword() {
+    setModalName('forgotPassword')        
+  }
 
-    return (
-            <div className={styles.login}>
-                <form onSubmit={submitForm} method='post' className={styles.loginForm}>
-                    <h1>Sign in</h1>
-                    <fieldset>
-                        <legend>Name</legend>
-                        <input 
-                            name='email' 
-                            type='email'
-                            autoComplete='email'
-                            required
-                            placeholder='Email address'
-                        />
-                    </fieldset>
-                    <fieldset>
-                        <legend>Password</legend>
-                        <input
-                            name='password'
-                            type='password'
-                            autoComplete='current-password'
-                            required
-                            placeholder='Password'
-                        />
-                    </fieldset> 
-                    <button type='submit'>Sign in</button>    
-                </form>      
+  function handleRegister() {
+    setModalName('register');
+  }
 
-                <p>{message}</p>         
+  return (
+    <div className={styles.login}>
+      <form onSubmit={submitForm} method='post' className={styles.loginForm}>
+        <h1>Sign in</h1>
+        <fieldset>
+          <legend>Name</legend>
+          <input 
+            name='email' 
+            type='email'
+            autoComplete='email'
+            required
+            placeholder='Email address'
+          />
+        </fieldset>
+        <fieldset>
+          <legend>Password</legend>
+          <input
+            name='password'
+            type='password'
+            autoComplete='current-password'
+            required
+            placeholder='Password'
+          />
+        </fieldset> 
+        <button type='submit'>Sign in</button>    
+      </form>      
 
-                <button onClick={handleForgotPassword}>Forgot password?</button>
+      <p>{message}</p>         
 
-                <button type='button' onClick={handleCreateAnAccount}>Create an account</button>
+      {/*<button onClick={handleForgotPassword}>Forgot password?</button>*/}
 
-            </div>
-    )
+      <button type='button' onClick={handleRegister}>Create an account</button>
+
+    </div>
+  )
 }
 
 export default Login
