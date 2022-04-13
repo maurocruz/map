@@ -1,9 +1,10 @@
 
 import { FlyToInterpolator } from 'react-map-gl';
+import ViewportInterface from 'src/interfaces/ViewportInterface';
 
 class Viewport 
 {
-    private viewport = {
+    private viewport: ViewportInterface = {
         type: "ViewPort",
         transitionDuration: 2500,
         transitionInterpolator: new FlyToInterpolator(),
@@ -12,7 +13,7 @@ class Viewport
         zoom: 0,
         pitch: 0,
         bearing: 0,
-        bbox: []
+        bbox: [[],[]]
 
     }
 

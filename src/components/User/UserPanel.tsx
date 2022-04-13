@@ -1,26 +1,24 @@
-
 import { useContext, useState } from 'react';
 import { Icon } from '@iconify/react';
+import { destroyCookie } from 'nookies';
 
-import { ContainerContext } from '@contexts/ContainerContext';
 import { AppContext } from '@contexts/AppContext';
 
 import * as styles from './UserPanel.module.scss'
-import useUser from '@hooks/useUser/useUser';
+import useModal from '@hooks/useModal/useModal';
 
 const UserPanel = () => {
 
-  const { toogleModal, setModalName } = useContext(ContainerContext)
-  const { user, isAuthenticated } = useContext(AppContext)
+  const { user, setUser, setIsAuthenticated } = useContext(AppContext)  
 
-  const { logout } = useUser();
+  const { openModal } = useModal();
 
   const [ showPanel, setShowPanel ] = useState(false)
 
   const style  = styles as any;
 
   function _onClickAccount(e) {
-    if (isAuthenticated) {
+    if (user) {
       if(showPanel) {
         setShowPanel(false)
       } else {
@@ -28,29 +26,42 @@ const UserPanel = () => {
       }
       
     } else {
-      toogleModal(false)
-      setModalName('login')
-      e.stopPropagation()
+      openModal('login');
+      e.stopPropagation();
     }
   }
 
   function handleLogout() {
-    logout();
+    setUser(null);
+    setIsAuthenticated(false);
+    destroyCookie(undefined, 'plinctmap.token');
     setShowPanel(false);
+  }
+
+  function handleUserEdit() {
+    setShowPanel(false);
+    openModal('userEdit');
+  }
+
+  /** FAVORITES PLACE */
+  function handleFavoritesPlace() {
+    setShowPanel(false);
+    openModal('PlaceFavorites')
   }
 
   return (
     <div className={style.userPanel}>
       <div className={style.avatar} onClick={_onClickAccount}>
-        {isAuthenticated 
+        {user 
           ? <Icon icon="mdi:account-cog" /> 
           : <Icon icon="mdi:account" /> 
         }
       </div>
-    {isAuthenticated && showPanel &&
+    {user && showPanel &&
       <div className={style.panel}>
         <p>{user.name}</p>
-        <button>Edit profile</button>
+        <button onClick={handleFavoritesPlace}>Favorites place</button>
+        <button onClick={handleUserEdit}>Edit profile</button>
         <button onClick={handleLogout}>Log out</button>
       </div>
     }  

@@ -1,10 +1,9 @@
 import React from 'react'
-
-import UserPanel from './UserPanel'
+import { UserPanel } from '@components/User';
 
 import * as styles from './Header.module.scss'
 
-const Header = () => {
+const Header = () => { 
 
   const style  = styles as any;
 

@@ -1,4 +1,7 @@
 import { CSSProperties, useState } from "react"
+import mapboxgl from "mapbox-gl";
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
+import { PLACE } from '../../../plinct.config';
 
 /**
  * MUDA O TILESET (FUNDO DO MAPA)
@@ -61,5 +64,39 @@ const ChangeTileset = ({mapStyle, setMapStyle, mapStreet, mapSattelite}) =>
     )
 }
 
+// Navigation control (zoom + zoom -)
+function zoomControl(mapbox: mapboxgl.Map) { 
+    mapbox.addControl(new mapboxgl.NavigationControl({}),'top-left');
+}
 
-export { ChangeTileset }
+ // scale bar
+function scaleBar(mapbox: mapboxgl.Map) {
+    mapbox.addControl(new mapboxgl.ScaleControl({}))  
+ }
+
+
+// button user Geolocation
+function geoLocateControl(mapbox: mapboxgl.Map) {
+  mapbox.addControl(new mapboxgl.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true
+      },
+      trackUserLocation: true,
+      showUserHeading: true
+    }
+  ),'top-left');
+}
+
+// Geocoder - search place input
+function geoCoderControl(mapbox: mapboxgl.Map) {
+    
+    mapbox.addControl(new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl: mapboxgl,
+      types: "place",
+      countries: PLACE.default.country,
+      placeholder: "Procurar por cidade..."
+    }))    
+  }
+
+export { ChangeTileset, zoomControl, scaleBar, geoLocateControl, geoCoderControl }

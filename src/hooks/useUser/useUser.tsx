@@ -1,64 +1,77 @@
-import { useContext, useEffect } from 'react'
-import { destroyCookie, setCookie } from 'nookies';
+import { useEffect, useState } from 'react'
 import { useApi } from '@hooks/useApi';
-import { AppContext } from '@contexts/AppContext';
+import jwtDecode from 'jwt-decode';
+import useToken from './useToken';
+
+type TokenType = {
+  iss: string,
+  exp: number,
+  name: string,
+  admin: boolean,
+  uid: string
+}
 
 export type UserType = {
-    name: string
+  name: string,
+  status: string,
+  uid: string,
+  email?: string
 }
 
 export default function useUser() 
 {
-  const { setIsAuthenticated, setUser, setToken } = useContext(AppContext);
+  const { token } = useToken();
 
-  const { responseApi, setRequest } = useApi();  
+  const { responseApi, setRequestApi } = useApi();
+
+  const [ user, setUser ] = useState<UserType>();
 
   useEffect(() => {
-    if (responseApi && responseApi.status == "success" && responseApi.token) {
-      setCookie(undefined, 'plinctmap.token', responseApi.token, {
-        maxAge: 60 * 60 * 1
+    if(token) {
+      //getUser(token);
+      const tokenDecoded = jwtDecode<TokenType>(token);      
+      setRequestApi({
+        path: 'user',
+        method: 'GET',
+        token: token,
+        values: {
+          iduser: tokenDecoded.uid
+        }
       })
-      setToken(responseApi.token);
     }
 
-    return () => {}
-    
+    return () => {
+      return null;
+    }
+  },[token])
+
+  useEffect(() => {    
+    if (responseApi && responseApi.length == 1) {
+      const response = responseApi[0];      
+      setUser({
+        name: response.name,
+        status: response.status,
+        uid: response.iduser,
+        email: response.email
+      });
+    }
   }, [responseApi])
 
-  function login (email: string, password: string) {
-    setRequest({
-      method: 'post',
-      type: 'auth/login',
+  function getUser(token: string) {
+    const tokenDecoded = jwtDecode<TokenType>(token);      
+    setRequestApi({
+      path: 'user',
+      method: 'GET',
+      token: token,
       values: {
-        email: email,
-        password: password
+        iduser: tokenDecoded.uid
       }
     })
-  }
-
-  function register (email: string, name: string, password: string, repeatPassword: string) {
-    setRequest({
-      method: 'post',
-      type: 'auth/register',
-      values: {
-        email: email,
-        name: name,
-        password: password,
-        repeatPassword: repeatPassword
-      }
-    })
-  }
-
-  function logout() {
-    setIsAuthenticated(null);
-    setUser(null);
-    destroyCookie(undefined, 'plinctmap.token');        
   }
 
   return {
-    login,
-    logout,
-    register,
-    responseApi
+    user,
+    setUser,
+    getUser
   }
 }

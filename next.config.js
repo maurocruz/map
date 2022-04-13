@@ -10,6 +10,7 @@ module.exports = {
         '@interfaces': path.resolve(__dirname, './src/interfaces'),
         '@contexts': path.resolve(__dirname, './src/contexts'),
         '@hooks': path.resolve(__dirname, './src/hooks'),
+        '@libs': path.resolve(__dirname, './src/libs'),
     }
 
     return config

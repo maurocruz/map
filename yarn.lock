@@ -333,10 +333,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/mapbox-gl@*", "@types/mapbox-gl@^2.0.3", "@types/mapbox-gl@^2.6.1":
-  "integrity" "sha512-ErM4hS1cAH9eJZ+b0bgrF9JuSN1P5i9jhfiJTZ6uOb2Bib7a8tkUivLz/fA69h51JN2CE3G5RE8EZIslgBzIIA=="
-  "resolved" "https://registry.npmjs.org/@types/mapbox-gl/-/mapbox-gl-2.6.1.tgz"
-  "version" "2.6.1"
+"@types/mapbox-gl@*", "@types/mapbox-gl@^2.0.3", "@types/mapbox-gl@^2.6.3":
+  "integrity" "sha512-oF5eQmczkoPQfxfRSwpF9GcrWi3YleptJ67uiCQKps+7aKxwIbww0EHHqIrxvOg49l07+AZBtJU2FPKZm1jKAg=="
+  "resolved" "https://registry.npmjs.org/@types/mapbox-gl/-/mapbox-gl-2.6.3.tgz"
+  "version" "2.6.3"
   dependencies:
     "@types/geojson" "*"
 

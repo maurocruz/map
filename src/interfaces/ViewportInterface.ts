@@ -8,7 +8,7 @@ interface ViewportInterface {
     zoom: number,
     pitch: number,
     bearing: number,
-    bbox: [[number,number],[number,number]],
+    bbox: [number[], number[]],
 }
 
 export default ViewportInterface

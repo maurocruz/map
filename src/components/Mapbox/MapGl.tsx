@@ -1,92 +1,109 @@
-import mapboxgl, { Marker } from "mapbox-gl"
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
-import { ChangeTileset } from "./Controls";
-import { useContext, useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react";
+import { Router } from "next/router";
+import mapboxgl, { MapboxOptions, Marker } from "mapbox-gl";
+import { ChangeTileset, geoCoderControl, geoLocateControl, scaleBar, zoomControl } from "./Controls";
 
 import TooltipRightButton from "./TooltipRightButton";
 import EventInfo from "@components/EventInfo";
 
 import { FeatureModal } from '@components/Modal'
 import { ContainerContext } from "@contexts/ContainerContext";
-import { MapContext } from "@contexts/MapContext";
 
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
-
-const geolocateControl = {
-  positionOptions: {
-    enableHighAccuracy: true
-  },
-  trackUserLocation: true,
-  showUserHeading: true
-}
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
 const mapStreet = "mapbox://styles/maurocruz/ckur99bp404ze15o0icj8kt6h"
 const mapSattelite = "mapbox://styles/maurocruz/ckxgf6qdl0p4g14rrqmkr7vh5"
+const dataSource = "https://pirenopolis.tur.br/api/place?format=geojson&limit=none";
 
 import style from './Mapbox.module.scss';
 
 /**
- * MAPBOX FUNCTION
- * 
- * @param props 
- * @returns 
+ * MAPBOX FUNCTION 
  */
-const MapGl = (props: any) => {
+const MapGl = () => 
+{
+  // CONTEXTS
+  const { longitude, setLongitude, latitude, setLatitude, zoom, setZoom, pitch, setPitch, bearing, setBearing, pushState } = useContext(ContainerContext);    
+  const { geocoder, geoLocation, flyTo, viewport } = useContext(ContainerContext);
 
-  const { dataSource, dataLocation, setCenter, setZoom, setPitch, setBearing, marker } = useContext(MapContext);
-
-  const mapContainer = useRef()
+  const mapContainer = useRef();
+  const [ map, setMap ] = useState<mapboxgl.Map>(undefined);
 
   const [ mapStyle, setMapStyle ] = useState(mapStreet)
-
   const [ rightButton, setRightButton ] = useState(null)
   const [ eventInfo, setEventInfo ] = useState(null);
+  //const [ geojson, setGeojsonson ] = useState(dataLocation.geojson);
 
-  // CONTEXTS
-  const { toogleModal, setModalComponent, geocoder, geoLocation } = useContext(ContainerContext)
-
-  // VALUES QUE DEVEM SER DIMÂMICOS NO FUTURO
-  const country = 'br' // país ou local cuja a busca do map deve ser restrito
-
-  function handleFeatureClick(feature) {
-      toogleModal(true);
-      setModalComponent(<FeatureModal feature={feature}/>)
-  }
-
+  //### FLY TO ###//
   useEffect(() => {
-    const viewPort = dataLocation.viewport;
-    const geojson = dataLocation.geojson;
+    if (flyTo) {
+      map.flyTo({
+        center: [flyTo.longitude, flyTo.latitude],
+        zoom: flyTo.zoom,
+        pitch: flyTo.pitch,
+        bearing: flyTo.bearing
+        
+      });
+    }
+  },[flyTo]);
 
+  /** CREATE MAP */
+  useEffect(() => {
+    const map = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: mapStyle,
+      center: {lng: viewport.longitude, lat: viewport.latitude},
+      zoom: viewport.zoom,
+      pitch: viewport.pitch,
+      bearing: viewport.bearing
+    });
+    setMap(map);
+    // CONTROLS
+    geocoder && geoCoderControl(map);
+    geoLocation && geoLocateControl(map);
+    scaleBar(map);
+    zoomControl(map);
+  },[viewport]);
+
+  /** CHANGE STYLE */
+  useEffect(() => {
+    if(map) {
+      map.setStyle(mapStyle);
+    }
+  },[mapStyle]);
+
+  /** EVENTS */
+  useEffect(() => {
+    if(map) {
+      map.on('contextmenu', (e) => {
+        setRightButton(e);
+      })
+      .on('move',function(_e){   
+        setLongitude(map.getCenter().lng);     
+        setLatitude(map.getCenter().lat);
+        setZoom(map.getZoom());
+        setPitch(map.getPitch());
+        setBearing(map.getBearing());
+      })
+      .on('moveend', function() {
+        pushState(map.getCenter().lng, map.getCenter().lat, map.getZoom(), map.getPitch(), map.getBearing());
+      });
+    }
+  },[map]);
+
+  /*useEffect(() => {
     // create the map 
     const map = new mapboxgl.Map({
     container: mapContainer.current,
     style: mapStyle,
-    center: {lng: viewPort.longitude, lat: viewPort.latitude},
-    zoom: viewPort.zoom,
-    pitch: viewPort.pitch,
-    bearing: viewPort.bearing
+    center: {lng: viewport.longitude, lat: viewport.latitude},
+    zoom: viewport.zoom,
+    pitch: viewport.pitch,
+    bearing: viewport.bearing
     })
 
-    /********** CONTROLS ************/
-    // Geocoder - search place input
-    geocoder && map.addControl(new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
-      mapboxgl: mapboxgl,
-      types: "place",
-      countries: country,
-      placeholder: "Procurar por cidade..."
-    }))
-    
 
-    // button user Geolocation
-    geoLocation && map.addControl(new mapboxgl.GeolocateControl(geolocateControl),'top-left');
 
-    // Navigation control (zoom + zoom -)
-    map.addControl(new mapboxgl.NavigationControl({}),'top-left');
-
-    // scale bar
-    map.addControl(new mapboxgl.ScaleControl({}))  
-    
     // MARKER          
     if (marker) {      
       geojson.features.map(feature => {
@@ -104,7 +121,7 @@ const MapGl = (props: any) => {
         .addTo(map);
 
       });
-    } 
+    }
 
     // MAP ONLOAD
     map.on("load", () => {
@@ -130,9 +147,6 @@ const MapGl = (props: any) => {
         }
       });
 
-
-
-
       // Center the map on the coordinates of any clicked circle from the 'circle' layer.
       map.on('click', 'cluster-places', (e: any) => {
           const feature = e.features[0];
@@ -152,11 +166,15 @@ const MapGl = (props: any) => {
         map.getCanvas().style.cursor = '';
       });
 
-      map.on('move',function(_e){
+      map.on('move',function(_e){   
+        setLongitude(map.getCenter().lng);     
         setCenter(map.getCenter());
         setZoom(map.getZoom());
         setPitch(map.getPitch());
         setBearing(map.getBearing());
+      })
+
+      map.on('moveend', function(e) {
       })
 
       map.on('contextmenu', (e) => {
@@ -167,7 +185,7 @@ const MapGl = (props: any) => {
     // cleanup function to remove map on unmount
     return () => map.remove()
 
-  }, [mapStyle, dataLocation])
+  }, [mapStyle, viewport, geojson]);*/
 
   return (
     <div ref={mapContainer} style={{ width: "100%", height: "100vh" }}>

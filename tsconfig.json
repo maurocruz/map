@@ -23,6 +23,8 @@
       "@components/*": ["src/components/*"],
       "@contexts/*": ["src/contexts/*"],
       "@hooks/*": ["src/hooks/*"],
+      "@interfaces/*": ["src/interfaces/*"],
+      "@libs/*": ["src/libs/*"],
     },
     "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },

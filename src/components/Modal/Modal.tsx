@@ -2,31 +2,42 @@ import { useRef } from "react";
 import Draggable from 'react-draggable'
 import DraggableBar from "./DraggableBar";
 
-import { ForgotPassword, Login, Register } from "@components/Forms";
-
 import styles from './modal.module.scss'
+import useModal from "@hooks/useModal/useModal";
 
-const Modal = ({ modalName, modalComponent }) => {
+const Modal = ({ modalName }) => 
+{
+  const { closeModal, getContent } = useModal();
 
-    const ref = useRef(null)
+  const containerRef = useRef(null);
+  const contentRef = useRef(null);
 
-    return (
-        <Draggable
-            nodeRef={ref}
-            handle="#draggableBar"
-            bounds="body"
-        >
-            <div id="container-overlay" className={styles.container} ref={ref}>
-                <DraggableBar />
-                <div id="containerOverlayContent" className={styles.content}>
-                    {modalName == 'login' ? <Login /> : null}
-                    {modalName == 'register' ? <Register /> : null}
-                    {modalName == 'forgotPassword' ? <ForgotPassword /> : null}
-                    {modalComponent}
-                </div>
-            </div>
-        </Draggable>
-    )    
+  const idHandle = 'draggableContaine_'+modalName.replace(' ','');
+
+  // FUNCTION RETRACT MODAL
+  function retractContent() {
+    if (contentRef.current.style.display === 'none') {
+      contentRef.current.style.display = 'block';
+    } else {
+      contentRef.current.style.display = 'none';
+    }
+  }
+
+  return (
+    <Draggable nodeRef={containerRef} handle=".draggableHandle" bounds="body">
+
+      <div className={`draggableHandle ${styles.draggableContainer}`} ref={containerRef}>
+
+        <DraggableBar title={modalName} retractContent={retractContent} closeContainer={() => closeModal(modalName)} />
+
+          <div className={styles.draggableContent} ref={contentRef}>
+            {getContent(modalName)}
+          </div>
+
+      </div>
+
+    </Draggable>
+  )    
 }
 
 export default Modal;

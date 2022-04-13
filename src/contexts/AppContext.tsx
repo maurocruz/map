@@ -1,14 +1,13 @@
 import { createContext, useEffect, useState } from "react";
+import { useToken, useUser } from "@hooks/useUser";
 import { UserType } from "@hooks/useUser/useUser";
-import { destroyCookie, parseCookies } from "nookies";
-import jwtDecode from "jwt-decode";
 
 type AppContextType = {
   isAuthenticated: boolean,
   setIsAuthenticated: Function,
   user: UserType,
   setUser: Function,
-  apiHost: string,
+  token: string,
   setToken: Function
 }
 
@@ -16,34 +15,27 @@ export const  AppContext = createContext({} as AppContextType);
 
 export function AppProvider({ children }) {
 
-  const apiHost = "https://plinct.local/api/";
+  const { token, setToken } = useToken();
+  const { user, setUser, getUser } = useUser();
 
   const [ isAuthenticated, setIsAuthenticated ] = useState(false);
 
-  const [ user, setUser ] = useState<UserType | null>(null);
-
-  const [ token, setToken ] = useState(null);
-
-
   useEffect(() => {
-    const { 'plinctmap.token': token } = parseCookies();
-//console.log(token);
-    if (token && token !== 'undefined') {
-      const tokenDecoded = jwtDecode<UserType>(token)
-      //console.log(tokenDecoded)
-      setUser({ name: tokenDecoded.name })
-      setIsAuthenticated(true);
-      setToken(token);
-    } else {
-      setUser(null)
-      setIsAuthenticated(false);
-      destroyCookie(undefined, 'plinctmap.token');        
+    if (isAuthenticated) {
+      getUser(token);
     }
-  },[token])
-
+  },[isAuthenticated]);
+  
   return (
-    <AppContext.Provider value={{ isAuthenticated, setIsAuthenticated, user, setUser, apiHost, setToken }}>
-      { children }
+    <AppContext.Provider value={{ 
+      isAuthenticated,
+      setIsAuthenticated,
+      user, 
+      setUser, 
+      token, 
+      setToken
+    }}>
+      {children}
     </AppContext.Provider>
   )
 }

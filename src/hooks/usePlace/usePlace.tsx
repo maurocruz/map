@@ -4,15 +4,15 @@ import { useApi } from "@hooks/useApi";
 const usePlace = (additType: string) => 
 {    
     // POINTS PLACE
-    const { response, setRequest } = useApi()
+    const { responseApi, setRequestApi } = useApi()
 
     const [ pointsPlace, setPointsPlace ] = useState(null);
     const [ additionalType, setAdditionalType ] = useState(additType);
 
     useEffect(() => {
-        if (response == undefined && additionalType) {
-            setRequest({
-                type: 'place',
+        if (responseApi == undefined && additionalType) {
+            setRequestApi({
+                path: 'place',
                 method: 'GET',
                 values: {
                     additionalType: additionalType,
@@ -20,11 +20,11 @@ const usePlace = (additType: string) =>
                 }
             });
 
-        } else if(response && response.status == 'success'){
-            setPointsPlace(response.data.data);
+        } else if(responseApi && responseApi.status == 'success'){
+            setPointsPlace(responseApi.data.data);
         }
         
-    },[response, additionalType])    
+    },[responseApi, additionalType])    
 
     return { pointsPlace, setAdditionalType }
 }

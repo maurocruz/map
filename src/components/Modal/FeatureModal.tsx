@@ -1,7 +1,7 @@
 
 import { ContainerContext } from "@contexts/ContainerContext";
 import { useContext } from "react";
-import { useModal } from "src/hooks";
+import { useModal } from "@hooks/useUser";
 import { FeatureInterface } from "src/interfaces";
 
 

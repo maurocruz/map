@@ -4,14 +4,11 @@ import ReactMapGL, { MapEvent, GeolocateControl, NavigationControl, ScaleControl
 import Geocoder from 'react-map-gl-geocoder'
 
 import TooltipRightButton from "./TooltipRightButton";
-import EventInfo from '@components/EventInfo'
 import { ChangeTileset } from "./Controls";
 import WebMercatorViewport from "viewport-mercator-project";
 
 import * as styles from './Mapbox.module.scss'
 import { MapContext } from "src/contexts";
-import { usePlace } from "@hooks/usePlinct";
-import { Icon } from "@iconify/react";
 
 /**  
  * COMPONENT MAP EM MAPBOX

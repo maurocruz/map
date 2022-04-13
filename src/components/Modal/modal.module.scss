@@ -1,46 +1,57 @@
-.container {
-    position: absolute;
-    align-self: center;
-    justify-self: center;
-    width: fit-content;
-    height: fit-content;
-    box-sizing: border-box;
-    padding: 0;
-    border-bottom-right-radius: 6px;
-    border-bottom-left-radius: 6px;
-    box-shadow: 2px 2px 6px #777;
-    background-color: white;
-    z-index: 10;
+.draggableContainer {
+  position: absolute;
+  align-self: center;
+  /*justify-self: center;*/
+  width: fit-content;
+  height: fit-content;
+  box-sizing: border-box;
+  padding: 0;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  box-shadow: 2px 2px 6px #777;
+  background-color: white;
+  z-index: 10;
+
+  .draggableBar {
+    display: flex;
+    background-color: rgb(153, 153, 153);
+    padding: 2px;
+    color: white;
+
+    .draggableMove {
+      flex-basis: 23px;
+      line-height: 0;
+      cursor: move;
+
+      svg {
+        font-size: 1.3em;
+        color: white;
+      }
+    }
+
+    .draggableTitle {
+      flex-basis: 100%;
+      cursor: pointer;
+      font-size: 0.85em;
+      text-align: center;
+      align-self: center;
+    }
 
     .draggableClose {
-        display: flex;
-        background-color: rgb(84, 84, 128);
-        padding: 2px;
+      flex-basis: 20px;
+      line-height: 0;
 
-        .draggable {
-            flex-basis: 100%;
-            line-height: 0;
-            cursor: move;
-
-            svg {
-                font-size: 1.3em;
-                color: white;
-            }
-        }
-
-        .close {
-            flex-basis: 20px;
-            line-height: 0;
-
-            svg {
-                font-size: 1.4em;
-                color: white;
-                cursor: pointer;
-            }
-        }
+      svg {
+        font-size: 1.4em;
+        color: white;
+        cursor: pointer;
+      }        
     }
+  }
 
-    .content {
-        padding: 5px;
-    }
+  .draggableContent {
+    display: block;
+    padding: 5px;
+    overflow: hidden;
+  }
 }
