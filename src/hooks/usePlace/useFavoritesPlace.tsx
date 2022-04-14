@@ -46,10 +46,23 @@ export default function useFavoritesPlace() {
     })
   }
 
+  function request_changePositionFavplaces(idmap_viewport: string, position: string) {
+    setRequestApi({
+      path: 'map/viewport',
+      method: 'PUT',
+      values: {
+        idmap_viewport: idmap_viewport,
+        position: position
+      },
+      token: token
+    });
+  }
+
   return {
     favPlaceResponse,
     getFavPlaces,
     saveFavPlaces,
-    deleteFavPlace
+    deleteFavPlace,
+    request_changePositionFavplaces
   }
 }

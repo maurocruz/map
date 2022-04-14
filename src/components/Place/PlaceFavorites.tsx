@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import GridLayout from 'react-grid-layout';
 import { Icon } from '@iconify/react';
 import { AppContext } from '@contexts/AppContext';
 import { ContainerContext } from '@contexts/ContainerContext';
@@ -9,7 +10,7 @@ import style from './favplaces.module.scss'
 
 import * as config from '../../../plinct.config';
 
-type FavPlaces = {
+type Favplaces = {
   idmap_viewport: number,
   name: string;
   initial: number,
@@ -26,7 +27,7 @@ export default function PlaceFavorites()
   const { user } = useContext(AppContext);
   const { setFlyTo, viewport } = useContext(ContainerContext);
  
-  const { favPlaceResponse, saveFavPlaces, getFavPlaces, deleteFavPlace } = useFavoritesPlace();
+  const { favPlaceResponse, saveFavPlaces, getFavPlaces, deleteFavPlace, request_changePositionFavplaces } = useFavoritesPlace();
 
   const formRef = useRef(null);
   const inputTextRef = useRef<HTMLInputElement>(null);
@@ -60,7 +61,6 @@ export default function PlaceFavorites()
   useEffect(() => {
     if (isSaveForm) {
       inputTextRef.current.focus();
-      console.log(inputTextRef.current)
     }
   },[isSaveForm]);
 
@@ -68,6 +68,7 @@ export default function PlaceFavorites()
     const name  = formRef.current.elements.name.value;
     if (name) {      
       saveFavPlaces(name, JSON.stringify(viewport), user.uid);
+      _cancelForm();
     } else {
       setFormsaveMessage('Oh, no! name is mandatory!');
       inputTextRef.current.focus();
@@ -88,6 +89,20 @@ export default function PlaceFavorites()
   function _cancelForm() {
     setFormsaveMessage(null);
     setIsSaveForm(false);
+  }
+
+  function grabbing(e) {
+    e.currentTarget.style.cursor = 'grabbing';
+  }
+
+  function grab(e) {
+    e.currentTarget.style.cursor = 'grab';
+  }
+
+  function changePosition(e) {
+    e.forEach(element => {
+      request_changePositionFavplaces(element.i,(element.y+1).toString());
+    });
   }
 
   return (
@@ -113,30 +128,39 @@ export default function PlaceFavorites()
       </div>
 
       {favPlacesList && 
-        <ul className={style.favplacesList}>
-            {favPlacesList.map((favPlace: FavPlaces) => {
+        <GridLayout
+          cols={1}
+          width={240}
+          rowHeight={28}
+          autoSize={true}
+          isResizable={false}
+          className={style.favplacesList}
+          margin={[0,5]}
+          onDragStop={changePosition}
+        >
+          {favPlacesList.map((favplace: Favplaces) => {
+            return (
+              <div key={favplace.idmap_viewport} className={style.favplacesListItem}>
 
-              return (
-                <li key={favPlace.idmap_viewport} className={style.favplacesListItem}>
-                  <div>
-                  <Icon icon="uil:draggabledots" />
+                  <div className={style.favplacesListItemDraggabledots} onMouseDown={grabbing} onTouchStart={grabbing} onMouseUp={grab} onTouchEnd={grab}> 
+                    <Icon icon="uil:draggabledots" width={'20'}/>
                   </div>
-                  <div className={style.favplacesListItemTitle}>{favPlace.name}</div>
+
+                  <div className={style.favplacesListItemTitle} onMouseDown={grabbing} onTouchStart={grabbing} onMouseUp={grab} onTouchEnd={grab}>{favplace.name}</div>
+
                   <div className={style.favplacesListItemButtons}>
-                    <button className={style.favplacesListItemButtonFlyto} onClick={() => setFlyTo(favPlace.viewport)} onTouchEnd={()=>setFlyTo(favPlace.viewport) }>
-                      <Icon icon="la:fly" width='28' color={config.COLOR.buttons.flyto} />
+                    <button className={style.favplacesListItemButtonFlyto} onClick={() => setFlyTo(favplace.viewport)} onTouchEnd={()=>setFlyTo(favplace.viewport) }>
+                      <Icon icon="la:fly" width='26' color={config.COLOR.buttons.flyto} />
                     </button>               
-                    <button className={style.favplacesListItemButtonDelete} onClick={() => delFavPlace(favPlace.idmap_viewport)} onTouchEnd={() => delFavPlace(favPlace.idmap_viewport)}>
-                      <Icon icon="bxs:trash" width='22' color={config.COLOR.buttons.delete} />
+                    <button className={style.favplacesListItemButtonDelete} onClick={() => delFavPlace(favplace.idmap_viewport)} onTouchEnd={() => delFavPlace(favplace.idmap_viewport)}>
+                      <Icon icon="bxs:trash" width='16' color={config.COLOR.buttons.delete} />
                     </button>
                   </div>
-                </li>
-              )
-
-            })}
-        </ul>
+              </div>
+            )
+          })}
+        </GridLayout>
       }
-
     </div>
   )
 }

@@ -20,17 +20,12 @@
     .draggableMove {
       flex-basis: 23px;
       line-height: 0;
-      cursor: move;
-
-      svg {
-        font-size: 1.3em;
-        color: white;
-      }
+      cursor: grab;      
     }
 
     .draggableTitle {
       flex-basis: 100%;
-      cursor: pointer;
+      cursor: grab;
       font-size: 0.85em;
       text-align: center;
       align-self: center;

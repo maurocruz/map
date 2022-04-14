@@ -5,6 +5,8 @@ import { AppProvider, ContainerProvider } from '../src/contexts'
 
 import '../styles/globals.scss'
 
+import '../styles/reactGridLayout.css';
+
 
 function App({ Component, pageProps }) {
 

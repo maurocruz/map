@@ -37,12 +37,14 @@ export default function useApi() {
       const path = requestApi.path;
       const values = requestApi.values;      
       const url = apiHost+path;
-
+      const data = method == 'POST' || method == 'PUT' ? values : null;
+      const params = method == 'GET' || method == 'DELETE' ? values : null;
+      
       axios({
         url: url,
         method: method,
-        data: method == 'POST' || method == 'PUT' ? values : null,
-        params: method == 'GET' || method == 'DELETE' ? values : null,
+        data: data,
+        params: params,
         headers: {
           Authorization: requestApi.token ? `Bearer ${requestApi.token}` : null
         }

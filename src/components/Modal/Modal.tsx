@@ -36,9 +36,11 @@ const Modal = ({ modalName }) =>
       modalContent.style.height = (contentHeight+10)+'px';
       modalContent.style.visible = 'visible';
       modalContent.style.transition = '0.5s ease';
+      modalContent.style.paddingBottom = '5px';
     } else { // retract
       modalContent.style.height = '0px';
       modalContent.style.visible = 'hidden';
+      modalContent.style.paddingBottom = '0';
     } 
 
     setIsRetracted(!isRetracted);  
@@ -47,7 +49,7 @@ const Modal = ({ modalName }) =>
   return (
     <Draggable nodeRef={containerRef} handle=".draggableHandle" bounds="body" position={positionDraggable} onStop={_onStop}>
 
-      <div className={`draggableHandle ${styles.draggableContainer}`} ref={containerRef}>
+      <div className={styles.draggableContainer} ref={containerRef}>
 
         <DraggableBar title={modalName} retractContent={retractContent} isRetracted={isRetracted} closeContainer={() => closeModal(modalName)} />
 
