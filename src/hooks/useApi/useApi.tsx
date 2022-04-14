@@ -41,8 +41,8 @@ export default function useApi() {
       axios({
         url: url,
         method: method,
-        data: method == 'POST' || 'PUT' ? values : null,
-        params: method == 'GET' || 'DELETE' ? values : null,
+        data: method == 'POST' || method == 'PUT' ? values : null,
+        params: method == 'GET' || method == 'DELETE' ? values : null,
         headers: {
           Authorization: requestApi.token ? `Bearer ${requestApi.token}` : null
         }

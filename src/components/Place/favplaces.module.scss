@@ -1,0 +1,76 @@
+.favplacesContainer {
+  text-align: center;
+  min-width: 240px;
+
+  .favplacesForm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32px;
+
+    .favplacesFormsave {
+      display: block;
+
+      button {
+        padding: 0;
+        background-color: transparent;
+        border: none;
+      }
+
+      .favplacesFormsaveMessage {
+        margin: 0;
+        color: red;
+      }
+      .favplacesFormsaveName {
+        width: fit-content;
+        max-width: 180px;
+      }
+      .favplacesFormsaveSubmit {
+        width: 28px;
+        vertical-align: middle;
+      }
+      .favplacesFormsaveCancel {
+        width: 28px;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .favplacesList {
+    list-style: none;
+    text-align: left;
+    padding-left: 0;
+    margin: 0;
+
+    .favplacesListItem {
+      display: flex;
+      width: 100%;
+      justify-content: space-around;
+      border: 1px solid #eeeeee;
+      align-items: center;
+      margin-bottom: 2px;
+      
+      .favplacesListItemTitle {
+        flex-basis: 100%;
+        padding-left: 5px;
+      }
+      .favplacesListItemButtons {
+        flex-basis: 80px;
+        
+        .favplacesListItemButtonFlyto {
+          padding: 0;
+          background-color: transparent;
+          border: none;
+          vertical-align: middle;
+          margin-right: 3px;
+        }
+        .favplacesListItemButtonDelete {
+          padding: 0;
+          background-color: transparent;
+          border: none;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}

@@ -28,7 +28,6 @@ export default function useUser()
 
   useEffect(() => {
     if(token) {
-      //getUser(token);
       const tokenDecoded = jwtDecode<TokenType>(token);      
       setRequestApi({
         path: 'user',
@@ -55,6 +54,11 @@ export default function useUser()
         email: response.email
       });
     }
+
+    return () => {
+      return null;
+    }
+    
   }, [responseApi])
 
   function getUser(token: string) {

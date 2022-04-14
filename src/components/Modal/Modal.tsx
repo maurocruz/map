@@ -1,34 +1,55 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Draggable from 'react-draggable'
 import DraggableBar from "./DraggableBar";
 
+import { useModal } from "@hooks/useModal";
+
 import styles from './modal.module.scss'
-import useModal from "@hooks/useModal/useModal";
 
 const Modal = ({ modalName }) => 
 {
   const { closeModal, getContent } = useModal();
+  const [ isRetracted, setIsRetracted ] = useState(false);
+  const [ positionDraggable, setPositionDraggable ] = useState({x:0,y:0});
 
   const containerRef = useRef(null);
-  const contentRef = useRef(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  const idHandle = 'draggableContaine_'+modalName.replace(' ','');
+  function _onStop(e, data) {
+    setPositionDraggable({x:data.x,y:data.y})
+  }
 
   // FUNCTION RETRACT MODAL
   function retractContent() {
-    if (contentRef.current.style.display === 'none') {
-      contentRef.current.style.display = 'block';
-    } else {
-      contentRef.current.style.display = 'none';
-    }
+    const modal = containerRef.current;
+    const modalContent = modal.lastChild;
+    const contentHeight = modalContent.firstChild.offsetHeight;
+    const x = positionDraggable.x;
+    const y = positionDraggable.y;
+
+    // reposition container
+    const newY = isRetracted ? y+(contentHeight/2) : y-(contentHeight/2);
+    setPositionDraggable({x:x,y:newY});
+
+    // move content
+    if (isRetracted) { // expand
+      modalContent.style.height = (contentHeight+10)+'px';
+      modalContent.style.visible = 'visible';
+      modalContent.style.transition = '0.5s ease';
+    } else { // retract
+      modalContent.style.height = '0px';
+      modalContent.style.visible = 'hidden';
+    } 
+
+    setIsRetracted(!isRetracted);  
   }
 
   return (
-    <Draggable nodeRef={containerRef} handle=".draggableHandle" bounds="body">
+    <Draggable nodeRef={containerRef} handle=".draggableHandle" bounds="body" position={positionDraggable} onStop={_onStop}>
 
       <div className={`draggableHandle ${styles.draggableContainer}`} ref={containerRef}>
 
-        <DraggableBar title={modalName} retractContent={retractContent} closeContainer={() => closeModal(modalName)} />
+        <DraggableBar title={modalName} retractContent={retractContent} isRetracted={isRetracted} closeContainer={() => closeModal(modalName)} />
 
           <div className={styles.draggableContent} ref={contentRef}>
             {getContent(modalName)}

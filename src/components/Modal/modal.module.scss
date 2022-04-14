@@ -1,7 +1,6 @@
 .draggableContainer {
   position: absolute;
   align-self: center;
-  /*justify-self: center;*/
   width: fit-content;
   height: fit-content;
   box-sizing: border-box;
@@ -35,17 +34,25 @@
       font-size: 0.85em;
       text-align: center;
       align-self: center;
+      padding: 0 20px;
     }
-
-    .draggableClose {
-      flex-basis: 20px;
+    .draggableBarButtons {
+      display: flex;
+      flex-basis: 55px;
       line-height: 0;
+      text-align: right;
 
-      svg {
-        font-size: 1.4em;
-        color: white;
-        cursor: pointer;
-      }        
+      .draggableBarRetracter {
+        padding: 0;
+        background-color: transparent;
+        border: none;
+        margin-right: 2px;
+      }
+      .draggableBarClose {
+        padding: 0;
+        background-color: transparent;
+        border: none
+      }
     }
   }
 
@@ -53,5 +60,11 @@
     display: block;
     padding: 5px;
     overflow: hidden;
+
+    h4 {
+      margin: 0 0 5px 0;
+      font-size: 0.9em;
+    }
+
   }
 }

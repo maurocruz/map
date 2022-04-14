@@ -2,7 +2,7 @@ import { ContainerContext } from "@contexts/ContainerContext";
 import { useContext } from "react";
 
 import { UserEdit, UserLogin, UserRegister } from "@components/User";
-import { PlaceFavotites } from "@components/Place";
+import { PlaceFavorites } from "@components/Place";
 import { ForgotPassword } from "@components/Forms";
 
 
@@ -23,13 +23,8 @@ const useModal = () => {
   }
 
   function openModal(nameModal: string) {
-    const obj = new Object();
-    Object.entries(openedModals).forEach((value) => {
-      obj[value[0]] = value[1];
-    })
-
+    const obj = createObject();
     obj[nameModal] = true;
-    console.log(obj);    
     setOpenedModals(obj);
   }
 
@@ -45,7 +40,7 @@ const useModal = () => {
       case 'register': return <UserRegister/>;
       case 'forgotPassword': return <ForgotPassword/>;
       case 'userEdit': return <UserEdit/>;
-      case 'PlaceFavorites': return <PlaceFavotites/>;
+      case 'PlaceFavorites': return <PlaceFavorites/>;
     }
   }
 

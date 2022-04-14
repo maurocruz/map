@@ -1,3 +1,3 @@
-import PlaceFavotites from "./PlaceFavorites";
+import PlaceFavorites from "./PlaceFavorites";
 
-export { PlaceFavotites };
+export { PlaceFavorites };

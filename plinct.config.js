@@ -8,3 +8,10 @@ export const PLACE = {
   }
 }
 
+export const COLOR = {
+  buttons: {
+    delete: "#d71717",
+    flyto: "#286bd6"
+  }
+}
+

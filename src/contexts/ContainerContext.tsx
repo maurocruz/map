@@ -75,10 +75,6 @@ const ContainerProvider = ({children}) =>
 
   const [ openedModals, setOpenedModals ] = useState<Object>({});
 
-  useEffect(() => {
-    console.log(openedModals);
-  },[openedModals])
-
   // UPDATE INITIAL VIEWPORT
   useEffect(() => {
     setViewport(initialViewport);
