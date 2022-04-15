@@ -36,6 +36,8 @@ type ContainerContextType = {
     setPitch: Function,
     bearing: number,
     setBearing: Function,
+    markerQuery: string | string[],
+    setMarkerQuery: Function
     pushState: Function,
     flyTo: ViewportInterface,
     setFlyTo: Function,
@@ -72,6 +74,7 @@ const ContainerProvider = ({children}) =>
   const [ zoom, setZoom ] = useState(Number);
   const [ pitch, setPitch ] = useState(Number);
   const [ bearing, setBearing ] = useState(Number);
+  const [ markerQuery, setMarkerQuery ] = useState(null);
 
   const [ openedModals, setOpenedModals ] = useState<Object>({});
 
@@ -93,16 +96,19 @@ const ContainerProvider = ({children}) =>
       setLatitude(lat);
       // ZOOM
       const zoomQuery = query.zoom || query.z || null;
-      const z = (isQuery && typeof(zoomQuery)=='string') ? parseInt(zoomQuery) : viewport.zoom;
+      const z = (isQuery && typeof(zoomQuery)=='string') ? parseFloat(zoomQuery) : viewport.zoom;
       setZoom(z);
       // PITCH
       const pitchQuery = query.pitch || query.p || null;
-      const p = (isQuery && typeof(pitchQuery)=='string') ? parseInt(pitchQuery) : viewport.pitch;
+      const p = (isQuery && typeof(pitchQuery)=='string') ? parseFloat(pitchQuery) : viewport.pitch;
       setPitch(p);
       // BEARING
       const bearingQuery = query.bearing || query.b || null;
-      const b = (isQuery && typeof(bearingQuery)=='string') ? parseInt(bearingQuery) : viewport.bearing;
+      const b = (isQuery && typeof(bearingQuery)=='string') ? parseFloat(bearingQuery) : viewport.bearing;
       setBearing(b);
+      // MARKER
+      const markerQuery = query.marker || query.name || query.propertyName || null;
+      setMarkerQuery(markerQuery);
     }
   },[query,viewport]);
   
@@ -134,6 +140,8 @@ const ContainerProvider = ({children}) =>
         setPitch,
         bearing,
         setBearing,
+        markerQuery,
+        setMarkerQuery,
         pushState,
         flyTo,
         setFlyTo,

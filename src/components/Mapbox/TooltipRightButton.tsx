@@ -1,14 +1,19 @@
-import { CSSProperties, useRef } from "react";
+import { ContainerContext } from "@contexts/ContainerContext";
+import { CSSProperties, useContext, useRef } from "react";
+import { style } from '../../../plinct.config';
 
-const TooltipRightButton = (props: any) => {  
+const TooltipRightButton = (props: any) => 
+{
+    const { setFlyTo } = useContext(ContainerContext);
+
     const mapEvent = props.mapEvent;
     const setRightButton = props.setRightButton;
     const setEventInfo = props.setEventInfo;
 
-    const lng = mapEvent.lngLat.lng
-    const lat = mapEvent.lngLat.lat
-    const top = mapEvent.point.y
-    const left = mapEvent.point.x
+    const lng = mapEvent.lngLat.lng;
+    const lat = mapEvent.lngLat.lat;
+    const top = mapEvent.point.y;
+    const left = mapEvent.point.x;
 
     const divRef = useRef<HTMLDivElement>(null);
 
@@ -17,16 +22,19 @@ const TooltipRightButton = (props: any) => {
         top: top,
         left: left,
         backgroundColor: 'white',
-        padding: '20px',
+        padding: '4px',
         fontSize: '12px',
         cursor: 'auto',
         zIndex: 10
     }
 
     const styleButton: CSSProperties = {
-        border: 'none',
+        border: `1px solid ${style.color.border.lightGray}`,
         backgroundColor: 'transparent',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        width: '100%',
+        textAlign: 'left',
+        marginBottom: '4px'
     }
 
     // copy lngLat to clipboard
@@ -40,6 +48,7 @@ const TooltipRightButton = (props: any) => {
         });
     }
 
+    // CLOSE TOOLTIP IS CLICK ON MAP
     window.addEventListener('click',(e: any) => {
         if (e.target.getAttribute('id') != 'tooltip-rightButton') {
             setRightButton(null)
@@ -47,9 +56,18 @@ const TooltipRightButton = (props: any) => {
         }
     });    
 
+    // CENTRALIZA ON THO POINT
+    function centerHere(e) {
+        setFlyTo({
+            longitude: lng,
+            latitude: lat       
+        })
+    }
+
     return (
         <div id='tooltip-rightButton' ref={divRef} style={styleDiv}>
-            <button style={styleButton} onClick={handleOnClick}>{lat}, {lng}</button>
+            <button style={styleButton} onClick={handleOnClick}>Copy coordinates to clipboard</button>
+            <button style={styleButton} onClick={centerHere}>Center map here</button>
         </div>
     )
 }

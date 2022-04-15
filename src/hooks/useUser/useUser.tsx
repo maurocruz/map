@@ -62,15 +62,17 @@ export default function useUser()
   }, [responseApi])
 
   function getUser(token: string) {
-    const tokenDecoded = jwtDecode<TokenType>(token);      
-    setRequestApi({
-      path: 'user',
-      method: 'GET',
-      token: token,
-      values: {
-        iduser: tokenDecoded.uid
-      }
-    })
+    if (token) {
+      const tokenDecoded = jwtDecode<TokenType>(token);      
+      setRequestApi({
+        path: 'user',
+        method: 'GET',
+        token: token,
+        values: {
+          iduser: tokenDecoded.uid
+        }
+      })
+    }
   }
 
   return {

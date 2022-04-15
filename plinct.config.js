@@ -15,3 +15,11 @@ export const COLOR = {
   }
 }
 
+export const style = {
+  color: {    
+    border: {
+      lightGray: '#eeeeee'
+    }
+  }
+}
+
