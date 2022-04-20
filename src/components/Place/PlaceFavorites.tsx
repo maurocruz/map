@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import GridLayout from 'react-grid-layout';
-import { Icon } from '@iconify/react';
+
 import { AppContext } from '@contexts/AppContext';
 import { ContainerContext } from '@contexts/ContainerContext';
 import { useFavoritesPlace } from '@hooks/usePlace';
 import { ViewportInterface } from '@interfaces/index';
+import { IconFlyTo, IconTrash, IconDraggableDots, IconArrowBack, IconSave } from '@components/Icons';
 
-import style from './favplaces.module.scss'
+import css from './favplaces.module.scss'
 
-import * as config from '../../../plinct.config';
+import { style } from '../../../plinct.config';
 
 type Favplaces = {
   idmap_viewport: number,
@@ -106,24 +107,24 @@ export default function PlaceFavorites()
   }
 
   return (
-    <div className={style.favplacesContainer}>
+    <div className={css.favplacesContainer}>
 
-      <h4 className={style.favplacesTitle}>Favorites places</h4>
+      <h4 className={css.favplacesTitle}>Favorites places</h4>
 
-      <div className={style.favplacesForm}>
+      <div className={css.favplacesForm}>
       {isSaveForm 
-        ? <form ref={formRef} className={style.favplacesFormsave}>
-          {formsaveMessage && <p className={style.favplacesFormsaveMessage}>{formsaveMessage}</p>}
-          <input ref={inputTextRef} className={style.favplacesFormsaveName} name='name' defaultValue='' placeholder='Set a name' required/>
-          <button className={style.favplacesFormsaveSubmit} type='submit'>
-            <Icon type='submit' icon="ic:round-save-alt" color="#229630" width="28" onClick={_saveThisViewport} onTouchEnd={_saveThisViewport} />
+        ? <form ref={formRef} className={css.favplacesFormsave}>
+          {formsaveMessage && <p className={css.favplacesFormsaveMessage}>{formsaveMessage}</p>}
+          <input ref={inputTextRef} className={css.favplacesFormsaveName} name='name' defaultValue='' placeholder='Set a name' required/>
+          <button className={css.favplacesFormsaveSubmit} type='submit' onClick={_saveThisViewport}>
+            <IconSave color="#229630" width={28} />
           </button>
-          <button className={style.favplacesFormsaveCancel}>
-            <Icon icon="akar-icons:arrow-back-thick-fill" width="18" onClick={_cancelForm} onTouchEnd={_cancelForm} />
+          <button className={css.favplacesFormsaveCancel} onClick={_cancelForm}>
+            <IconArrowBack width="18" />
           </button>
         </form> 
 
-        : <button className={style.saveFavplacesButton} onClick={_openForm} onTouchEnd={_openForm}>Save this viewport</button>
+        : <button className={css.saveFavplacesButton} onClick={_openForm} onTouchEnd={_openForm}>Save this viewport</button>
       }
       </div>
 
@@ -134,26 +135,26 @@ export default function PlaceFavorites()
           rowHeight={28}
           autoSize={true}
           isResizable={false}
-          className={style.favplacesList}
+          className={css.favplacesList}
           margin={[0,5]}
           onDragStop={changePosition}
         >
           {favPlacesList.map((favplace: Favplaces) => {
             return (
-              <div key={favplace.idmap_viewport} className={style.favplacesListItem}>
+              <div key={favplace.idmap_viewport} className={css.favplacesListItem}>
 
-                  <div className={style.favplacesListItemDraggabledots} onMouseDown={grabbing} onTouchStart={grabbing} onMouseUp={grab} onTouchEnd={grab}> 
-                    <Icon icon="uil:draggabledots" width={'20'}/>
+                  <div className={css.favplacesListItemDraggabledots} onMouseDown={grabbing} onTouchStart={grabbing} onMouseUp={grab} onTouchEnd={grab}> 
+                    <IconDraggableDots width={20}/>
                   </div>
 
-                  <div className={style.favplacesListItemTitle} onMouseDown={grabbing} onTouchStart={grabbing} onMouseUp={grab} onTouchEnd={grab}>{favplace.name}</div>
+                  <div className={css.favplacesListItemTitle} onMouseDown={grabbing} onTouchStart={grabbing} onMouseUp={grab} onTouchEnd={grab}>{favplace.name}</div>
 
-                  <div className={style.favplacesListItemButtons}>
-                    <button className={style.favplacesListItemButtonFlyto} onClick={() => setFlyTo(favplace.viewport)} onTouchEnd={()=>setFlyTo(favplace.viewport) }>
-                      <Icon icon="la:fly" width='26' color={config.COLOR.buttons.flyto} />
+                  <div className={css.favplacesListItemButtons}>
+                    <button className={css.favplacesListItemButtonFlyto} onClick={() => setFlyTo(favplace.viewport)} onTouchEnd={()=>setFlyTo(favplace.viewport) }>
+                      <IconFlyTo width={26} color={style.color.icon.blue} />
                     </button>               
-                    <button className={style.favplacesListItemButtonDelete} onClick={() => delFavPlace(favplace.idmap_viewport)} onTouchEnd={() => delFavPlace(favplace.idmap_viewport)}>
-                      <Icon icon="bxs:trash" width='16' color={config.COLOR.buttons.delete} />
+                    <button className={css.favplacesListItemButtonDelete} onClick={() => delFavPlace(favplace.idmap_viewport)} onTouchEnd={() => delFavPlace(favplace.idmap_viewport)}>
+                      <IconTrash width={16} color={style.color.icon.red} />
                     </button>
                   </div>
               </div>

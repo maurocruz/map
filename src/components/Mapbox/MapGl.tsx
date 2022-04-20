@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
-import { ChangeTileset, geoCoderControl, geoLocateControl, scaleBar, zoomControl } from "./Controls";
+
+import { geoCoderControl, geoLocateControl, scaleBar, zoomControl } from "./Controls";
 
 import TooltipRightButton from "./TooltipRightButton";
 import EventInfo from "@components/EventInfo";
@@ -9,8 +10,6 @@ import { ContainerContext } from "@contexts/ContainerContext";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
-const mapStreet = "mapbox://styles/maurocruz/ckur99bp404ze15o0icj8kt6h"
-const mapSattelite = "mapbox://styles/maurocruz/ckxgf6qdl0p4g14rrqmkr7vh5"
 const dataSource = "https://pirenopolis.tur.br/api/place?format=geojson&limit=none";
 
 import style from './Mapbox.module.scss';
@@ -21,15 +20,22 @@ import style from './Mapbox.module.scss';
 const MapGl = () => 
 {
   // CONTEXTS
-  const { longitude, setLongitude, latitude, setLatitude, zoom, setZoom, pitch, setPitch, bearing, setBearing, markerQuery, pushState } = useContext(ContainerContext);    
-  const { geocoder, geoLocation, flyTo, viewport } = useContext(ContainerContext);
+  const { longitude, setLongitude, latitude, setLatitude, zoom, setZoom, pitch, setPitch, bearing, setBearing, markerQuery, pushState, mapStyle, setMapStyle, eventInfo, setEventInfo } = useContext(ContainerContext);    
+  const { geocoder, geolocate, flyTo, viewport } = useContext(ContainerContext);
 
   const mapContainer = useRef();
   const [ map, setMap ] = useState<mapboxgl.Map>(undefined);
 
-  const [ mapStyle, setMapStyle ] = useState(mapStreet)
   const [ rightButton, setRightButton ] = useState(null)
-  const [ eventInfo, setEventInfo ] = useState(null);
+  const [ geocoderControl, setGeocoderControl ] = useState(null);
+
+  useEffect(() => {
+    if (eventInfo) {
+      setTimeout(() => {
+         setEventInfo(null)
+      },3000);
+    }
+  },[eventInfo])
 
   //### FLY TO ###//
   useEffect(() => {
@@ -60,12 +66,24 @@ const MapGl = () =>
       bearing: viewport.bearing
     });
     setMap(map);
-    // CONTROLS
-    geocoder && geoCoderControl(map);
-    geoLocation && geoLocateControl(map);
+    // CONTROLS    
+    geolocate && geoLocateControl(map);
     scaleBar(map);
     zoomControl(map);
   },[viewport]);
+
+  /** GEOCODER */
+  useEffect(() => {
+    if(map) {
+      if (geocoder) {
+        const control = geoCoderControl();
+        map.addControl(control);
+        setGeocoderControl(control)
+      } else if (map.hasControl(geocoderControl)) {
+        map.removeControl(geocoderControl);
+      }
+    }
+  },[geocoder]);
 
   /** CHANGE STYLE */
   useEffect(() => {
@@ -88,6 +106,7 @@ const MapGl = () =>
           id: "cluster-places",
           type: "symbol",
           source: "placesApi",
+          minzoom: 13,
           layout: {
             "icon-image": ['get','icon-image'],
             "text-field": ["get","name"],
@@ -154,9 +173,7 @@ const MapGl = () =>
         />
       }   
 
-      {eventInfo && <EventInfo>{eventInfo}</EventInfo>}   
-
-      <ChangeTileset mapStyle={mapStyle} setMapStyle={setMapStyle} mapStreet={mapStreet} mapSattelite={mapSattelite} />
+      {eventInfo && <EventInfo>{eventInfo}</EventInfo>}        
     </div>
   )
 }

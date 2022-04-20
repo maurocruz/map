@@ -1,4 +1,4 @@
-import Mapbox from './Mapbox'
 import MapGl from './MapGl'
+import * as Controls from './Controls';
 
-export { Mapbox, MapGl }
+export { MapGl, Controls }

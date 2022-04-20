@@ -1,11 +1,11 @@
 import { useContext, useState } from 'react';
-import { Icon } from '@iconify/react';
 import { destroyCookie } from 'nookies';
 
 import { AppContext } from '@contexts/AppContext';
 
 import * as styles from './UserPanel.module.scss'
 import useModal from '@hooks/useModal/useModal';
+import { IconAccount, IconAccountConfiguration } from '@components/Icons';
 
 const UserPanel = () => {
 
@@ -53,8 +53,8 @@ const UserPanel = () => {
     <div className={style.userPanel}>
       <div className={style.avatar} onClick={_onClickAccount}>
         {user 
-          ? <Icon icon="mdi:account-cog" /> 
-          : <Icon icon="mdi:account" /> 
+          ? <IconAccountConfiguration width={'2em'} /> 
+          : <IconAccount width={'2em'} /> 
         }
       </div>
     {user && showPanel &&

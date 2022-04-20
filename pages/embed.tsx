@@ -5,12 +5,11 @@ import { ContainerContext } from "../src/contexts";
 export default function Embed() 
 {
   const { getUser } = useUser();
-  const { setGeocoder, setGeoLocation, setHeader } = useContext(ContainerContext)
+  const { setHeader, setGeolocate } = useContext(ContainerContext)
   
   useEffect(() => {
     getUser(null);
-    setGeocoder(false);
-    setGeoLocation(false);
+    setGeolocate(null);
     setHeader(false)
   },[])
 

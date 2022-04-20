@@ -3,11 +3,18 @@ import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import { Icon } from "@iconify/react";
 
-import { Modal } from "@components/Modal";
-import { MapProvider } from "./MapContext";
-import Header from "@components/Header/Header";
+import { mapStyles } from '../../plinct.config';
+
+import { MapProvider, BarsLeftProvider } from '@contexts/index'
+
+//import { MapProvider } from "./MapContext";
+
 import { useInitialViewport } from "@hooks/useMap";
 import { ViewportInterface } from "@interfaces/index";
+import { Modal } from "@components/Modal";
+import Header from "@components/Header/Header";
+import LeftBar from "@components/Bars/LeftBar";
+import { BarsLeftContext } from "./BarsLeftContext";
 
 const MapGl = dynamic(
   () => import('@components/Mapbox/MapGl'),
@@ -20,8 +27,8 @@ const MapGl = dynamic(
 type ContainerContextType = {
     geocoder: boolean,
     setGeocoder: Function,
-    geoLocation: boolean,
-    setGeoLocation: Function,
+    geolocate: boolean,
+    setGeolocate: Function,
     header: boolean,
     setHeader: Function,
     viewport: ViewportInterface,
@@ -42,10 +49,17 @@ type ContainerContextType = {
     flyTo: ViewportInterface,
     setFlyTo: Function,
     openedModals: Object,
-    setOpenedModals: Function
+    setOpenedModals: Function,
+    showLeftBar: boolean,
+    setShowLeftBar: Function,
+    mapStyle: string,
+    setMapStyle: Function,
+    eventInfo: string,
+    setEventInfo: Function
 }
 
 const ContainerContext = createContext({} as ContainerContextType)
+
 
 /**
  * 
@@ -65,8 +79,9 @@ const ContainerProvider = ({children}) =>
   const [ viewport, setViewport ] = useState<ViewportInterface>(initialViewport);
   const [ flyTo, setFlyTo] = useState<ViewportInterface>();
 
-  const [ geocoder, setGeocoder ] = useState(true);
-  const [ geoLocation, setGeoLocation ] = useState(true);  
+  const [ geocoder, setGeocoder ] = useState(false);
+  const [ geolocate, setGeolocate ] = useState(true);  
+  const [ mapStyle, setMapStyle ] = useState(mapStyles.outdoors.style);
   const [ header, setHeader ] = useState(true);
 
   const [ longitude, setLongitude ] = useState(Number);
@@ -75,8 +90,10 @@ const ContainerProvider = ({children}) =>
   const [ pitch, setPitch ] = useState(Number);
   const [ bearing, setBearing ] = useState(Number);
   const [ markerQuery, setMarkerQuery ] = useState(null);
-
   const [ openedModals, setOpenedModals ] = useState<Object>({});
+  const [ showLeftBar, setShowLeftBar ] = useState(false);
+
+  const [ eventInfo, setEventInfo ] = useState(null);
 
   // UPDATE INITIAL VIEWPORT
   useEffect(() => {
@@ -124,8 +141,8 @@ const ContainerProvider = ({children}) =>
       value={{ 
         geocoder, 
         setGeocoder,
-        geoLocation,
-        setGeoLocation,
+        geolocate,
+        setGeolocate,
         header,
         setHeader,
         viewport,
@@ -146,11 +163,21 @@ const ContainerProvider = ({children}) =>
         flyTo,
         setFlyTo,
         openedModals, 
-        setOpenedModals
+        setOpenedModals,
+        showLeftBar,
+        setShowLeftBar,
+        mapStyle,
+        setMapStyle,
+        eventInfo,
+        setEventInfo
       }
     }>
 
       {header && <Header/>}
+
+      <BarsLeftProvider>
+        {showLeftBar && <LeftBar />}
+      </BarsLeftProvider>
         
       {children}
       

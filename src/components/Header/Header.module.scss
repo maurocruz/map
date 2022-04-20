@@ -1,25 +1,26 @@
-.component {
+.headerContainer {
   position: relative;
   display: flex;
   justify-content: space-between;
-  padding: 0 10px;
-}
+  padding: 0 3px;
 
-.logo {
-  display: block;
-  flex-shrink: 0;
-  align-self: center;
-  margin: 0;
-  
-  h1 {
-    margin: 0;
-    font-size: 1.4em;
+  .headerMenu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-basis: 26px;
+    cursor: pointer;
   }
 
-  img {
+  .headerLogo {
     display: block;
-    height: 46px;
-    width: 109px;
+    flex-shrink: 0;
+    align-self: center;
     margin: 0;
+    
+    h1 {
+      margin: 0;
+      font-size: 1.2em;
+    }
   }
 }
